@@ -25,7 +25,7 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
           <Input
             type="search"
             placeholder="Search artwork, artists..."
-            className="pl-10 pr-4 py-2 rounded-full bg-[#1E1E24] border-myaccent text-white placeholder-[#A0A0A0] focus-visible:ring-myaccent focus-visible:border-myaccent"
+            className="pl-10 pr-4 py-2 rounded-full bg-[#1E1E24] border-myPurple text-white placeholder-[#A0A0A0] focus-visible:ring-myPurple focus-visible:border-myPurple"
           />
         </div>
 
@@ -42,7 +42,7 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
                   <ShoppingCart className="!w-5 !h-5" />
 
                   <span
-                    className="absolute -top-3 -right-3 bg-myaccent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                    className="absolute -top-3 -right-3 bg-myPurple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
                     aria-label="Cart items count"
                   >
                     3

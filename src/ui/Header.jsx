@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import MobileNavHeader from "./MobileNavHeader";
 import MobileSidebar from "./MobileSidebar";
-
 import { Sheet } from "@/components/ui/sheet";
 import DesktopNav from "./DesktopNav";
 
@@ -28,7 +27,7 @@ export default function Header() {
   return (
     <header
       className={`sticky top-0 z-50 w-full border-b border-[#101014] bg-[#101014] backdrop-blur supports-[backdrop-filter]:bg-[#101014]/95 ${
-        isScrolled ? "shadow-sm shadow-myaccent/10" : ""
+        isScrolled ? "shadow-sm shadow-myPurple/10" : ""
       }`}
     >
       <div className="px-4 md:px-7 flex h-16 items-center justify-between mx-auto">
@@ -47,7 +46,7 @@ export default function Header() {
             <Input
               type="search"
               placeholder="Search artwork, artists..."
-              className="pl-10 pr-4 py-3 rounded-full bg-[#1E1E24] border-myaccent text-white placeholder-[#A0A0A0] focus-visible:ring-myaccent focus-visible:border-myaccent text-sm h-11" // Added h-11 and py-3
+              className="pl-10 pr-4 py-3 rounded-full bg-[#1E1E24] border-myPurple text-white placeholder-[#A0A0A0] focus-visible:ring-myPurple focus-visible:border-myPurple text-sm h-11" // Added h-11 and py-3
             />
           </div>
 
@@ -59,7 +58,7 @@ export default function Header() {
             >
               <ShoppingCart className="!w-5 !h-5" />
 
-              <span className="absolute -top-1 -right-1 bg-myaccent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-myPurple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 3
               </span>
             </Button>
@@ -78,7 +77,7 @@ export default function Header() {
               </Button>
               <Button
                 size="sm"
-                className="bg-myaccent hover:bg-myaccent-hover text-white"
+                className="bg-myPurple hover:bg-myPurple-hover text-white"
                 asChild
               >
                 <Link to="/signup">

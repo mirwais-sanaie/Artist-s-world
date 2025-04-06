@@ -20,14 +20,14 @@ function MobileNavHeader() {
         to="/"
         className="flex items-center gap-2 font-bold text-lg mx-auto"
       >
-        <span className="text-myaccent">Art</span>
-        <span className="text-white">Station</span>
+        <span className="text-myPurple">Art</span>
+        <span className="text-white">Center</span>
       </Link>
 
       {/* Replaced User icon with Sign In button */}
       <Button
         size="sm"
-        className="bg-myaccent hover:bg-myaccent-hover text-white h-9 px-3 rounded-md"
+        className="bg-myPurple hover:bg-myPurple-hover text-white h-9 px-3 rounded-md"
         asChild
       >
         <Link to="/signin">
