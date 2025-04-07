@@ -3,7 +3,7 @@ import Header from "./Header";
 
 function AppLayout() {
   return (
-    <div className="bg-primary h-screen text-white">
+    <div className="bg-primary h-screen text-white px-5">
       <Header />
       <main>
         <Outlet />

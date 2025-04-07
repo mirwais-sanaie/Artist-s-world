@@ -30,7 +30,7 @@ export default function Header() {
         isScrolled ? "shadow-sm shadow-myPurple/10" : ""
       }`}
     >
-      <div className="px-4 md:px-7 flex h-16 items-center justify-between mx-auto">
+      <div className=" flex h-16 items-center justify-between mx-auto">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           {/* Mobile Navigation */}
           <MobileNavHeader />
