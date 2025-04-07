@@ -28,9 +28,9 @@ function CategorySlider() {
           {categories.map((category) => (
             <CarouselItem key={category.id} className="pl-1 basis-auto ">
               <div className="p-1">
-                <button className="flex cursor-pointer items-center gap-3 px-4 py-2 rounded-lg bg-myGray-dark hover:bg-myGray-muted transition-colors  w-full max-w-xs">
+                <button className="flex cursor-pointer items-center gap-3 px-4 py-3.5 md:py-3 rounded-lg bg-myGray-dark hover:bg-myGray-muted transition-colors  w-full max-w-xs">
                   <span className="text-2xl">{category.image}</span>
-                  <span className="text-white text-sm font-medium truncate">
+                  <span className="text-white text-md font-medium truncate">
                     {category.name}
                   </span>
                 </button>
