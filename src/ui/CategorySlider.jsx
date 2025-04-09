@@ -5,20 +5,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { NavLink } from "react-router-dom";
 
 function CategorySlider() {
   const categories = [
-    { id: 1, name: "Character Design", image: "🎨" },
-    { id: 2, name: "Environment Art", image: "🏞️" },
-    { id: 3, name: "Concept Art", image: "✏️" },
-    { id: 4, name: "3D Modeling", image: "🖥️" },
-    { id: 5, name: "Digital Painting", image: "🖌️" },
-    { id: 6, name: "Illustration", image: "🖼️" },
-    { id: 7, name: "UI/UX Design", image: "📱" },
-    { id: 8, name: "UI/UX Design", image: "📱" },
-    { id: 9, name: "UI/UX Design", image: "📱" },
-    { id: 10, name: "UI/UX Design", image: "📱" },
-    { id: 11, name: "UI/UX Design", image: "📱" },
+    { id: 1, name: "Character Design", image: "🎨", link: "characterDesign" },
+    { id: 2, name: "Environment Art", image: "🏞️", link: "substance" },
+    { id: 3, name: "Concept Art", image: "✏️", link: "gameAI" },
+    { id: 4, name: "3D Modeling", image: "🖥️", link: "illustration" },
+    { id: 5, name: "Digital Painting", image: "🖌️", link: "storyboard" },
+    { id: 6, name: "Illustration", image: "🖼️", link: "conceptidea" },
+    { id: 7, name: "UI/UX Design", image: "📱", link: "environment" },
+    { id: 8, name: "UI/UX Design", image: "📱", link: "digitalpainting" },
   ];
 
   return (
@@ -26,14 +24,23 @@ function CategorySlider() {
       <Carousel className="w-full">
         <CarouselContent className="-ml-1">
           {categories.map((category) => (
-            <CarouselItem key={category.id} className="pl-1 basis-auto ">
+            <CarouselItem key={category.id} className="pl-1 basis-auto">
               <div className="p-1">
-                <button className="flex cursor-pointer items-center gap-3 px-4 py-3.5 md:py-3 rounded-lg bg-myGray-dark hover:bg-myGray-muted transition-colors  w-full max-w-xs">
+                <NavLink
+                  to={category.link}
+                  className={({ isActive }) =>
+                    `flex cursor-pointer items-center gap-3 px-4 py-3.5 md:py-3 rounded-lg transition-colors w-full max-w-xs ${
+                      isActive
+                        ? "bg-myGray-muted"
+                        : "bg-myGray-dark hover:bg-myGray-muted"
+                    }`
+                  }
+                >
                   <span className="text-2xl">{category.image}</span>
                   <span className="text-white text-md font-medium truncate">
                     {category.name}
                   </span>
-                </button>
+                </NavLink>
               </div>
             </CarouselItem>
           ))}
