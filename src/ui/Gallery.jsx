@@ -1,11 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useSearchParams } from "react-router-dom";
 
 function Gallery({ text, numImg, from }) {
-  const param = useSearchParams();
-  console.log(param);
-
   const galleryItems = Array.from({ length: numImg }).map((_, i) => ({
     id: i + 1,
     title: `Artwork ${i + 1}`,
