@@ -6,6 +6,7 @@ import Jobs from "./pages/Jobs";
 import Cart from "./pages/Cart";
 import User from "./pages/User";
 import CharacterDesign from "./ui/CharacterDesign";
+import Gallery from "./ui/Gallery";
 
 function App() {
   return (
@@ -18,15 +19,35 @@ function App() {
           />
           <Route path="category" element={<Home />}>
             <Route path="characterDesign" element={<CharacterDesign />} />
-            <Route path="substance" element={<div>Substance</div>} />
-            <Route path="gameAI" element={<div>gameAI</div>} />
-            <Route path="illustration" element={<div>illustration</div>} />
-            <Route path="storyboard" element={<div>storyboard</div>} />
-            <Route path="conceptidea" element={<div>conceptidea</div>} />
-            <Route path="environment" element={<div>environment</div>} />
             <Route
-              path="digitalpainting"
-              element={<div>digitalpainting</div>}
+              path="substance"
+              element={<Gallery text="3d Substance" numImg={10} from={230} />}
+            />
+            <Route
+              path="gameAI"
+              element={<Gallery text="gameAI" numImg={5} from={240} />}
+            />
+            <Route
+              path="illustration"
+              element={<Gallery text="illustration" numImg={14} from={250} />}
+            />
+            <Route
+              path="storyboard"
+              element={<Gallery text="storyboard" numImg={3} from={270} />}
+            />
+            <Route
+              path="conceptidea"
+              element={<Gallery text="conceptidea" numImg={7} from={275} />}
+            />
+            <Route
+              path="environment"
+              element={<Gallery text="environment" numImg={11} from={290} />}
+            />
+            <Route
+              path="digitalpictures"
+              element={
+                <Gallery text="Digital pictures" numImg={9} from={310} />
+              }
             />
           </Route>
           <Route path="shop" element={<Shop />} />

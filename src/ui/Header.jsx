@@ -41,12 +41,11 @@ export default function Header() {
 
           {/* Larger Desktop Search Input */}
           <div className="hidden md:flex relative w-full max-w-lg mx-2">
-            {/* Changed from max-w-md to max-w-lg */}
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#A0A0A0]" />
             <Input
               type="search"
               placeholder="Search artwork, artists..."
-              className="pl-10 pr-4 py-3 rounded-full bg-[#1E1E24] border-myPurple text-white placeholder-[#A0A0A0] focus-visible:ring-myPurple focus-visible:border-myPurple text-sm h-11" // Added h-11 and py-3
+              className="pl-10 pr-4 py-3 rounded-full bg-[#1E1E24] border-myPurple text-white placeholder-[#A0A0A0] focus-visible:ring-myPurple focus-visible:border-myPurple text-sm h-11"
             />
           </div>
 

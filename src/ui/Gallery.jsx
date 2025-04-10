@@ -1,8 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useSearchParams } from "react-router-dom";
 
-function Gallery() {
-  const galleryItems = Array.from({ length: 12 }).map((_, i) => ({
+function Gallery({ text, numImg, from }) {
+  const param = useSearchParams();
+  console.log(param);
+
+  const galleryItems = Array.from({ length: numImg }).map((_, i) => ({
     id: i + 1,
     title: `Artwork ${i + 1}`,
     artist: `Artist ${i + 1}`,
@@ -10,37 +14,38 @@ function Gallery() {
     avatar: `https://randomuser.me/api/portraits/${
       i % 2 === 0 ? "men" : "women"
     }/${i + 10}.jpg`,
+    src: `https://picsum.photos/id/${i + from}/600/600`,
   }));
 
   return (
     <div className="py-8">
-      <h1 className="font-bold text-3xl md:text-4xl mb-6">Character Design</h1>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <h1 className="font-bold text-3xl md:text-4xl mb-6">{text}</h1>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-1">
         {galleryItems.map((item) => (
           <Card
             key={item.id}
-            className="group overflow-hidden border-none bg-transparent"
+            className="group overflow-hidden border-none bg-transparent cursor-pointer p-0 m-0 rounded-sm"
           >
-            <CardContent className="relative p-0 pb-[100%]">
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500">
-                <span className="text-lg">Artwork {item.id}</span>
-
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                  <div className="transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out">
-                    {/* Artist Info */}
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-12 w-12 border border-myaccent">
-                        <AvatarImage src={item.avatar} />
-                        <AvatarFallback>{item.artist.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-gray-300 text-lg font-medium">
-                          {item.artist}
-                        </p>
-                        <p className="text-gray-400 text-sm">
-                          ♥️ {item.likes} likes
-                        </p>
-                      </div>
+            <CardContent className="relative p-0 m-0 pb-[100%]">
+              <img
+                src={item.src}
+                alt={item.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 m-0">
+                <div className="transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out">
+                  <div className="flex items-center gap-3 m-0 p-0">
+                    <Avatar className="h-12 w-12 border border-myaccent m-0 p-0">
+                      <AvatarImage src={item.avatar} />
+                      <AvatarFallback>{item.artist.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="m-0 p-0">
+                      <p className="text-white text-lg font-medium m-0 p-0">
+                        {item.artist}
+                      </p>
+                      <p className="text-gray-400 text-sm m-0 p-0">
+                        ♥️ {item.likes} likes
+                      </p>
                     </div>
                   </div>
                 </div>

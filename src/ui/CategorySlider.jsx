@@ -10,13 +10,13 @@ import { NavLink } from "react-router-dom";
 function CategorySlider() {
   const categories = [
     { id: 1, name: "Character Design", image: "🎨", link: "characterDesign" },
-    { id: 2, name: "Environment Art", image: "🏞️", link: "substance" },
-    { id: 3, name: "Concept Art", image: "✏️", link: "gameAI" },
-    { id: 4, name: "3D Modeling", image: "🖥️", link: "illustration" },
-    { id: 5, name: "Digital Painting", image: "🖌️", link: "storyboard" },
-    { id: 6, name: "Illustration", image: "🖼️", link: "conceptidea" },
-    { id: 7, name: "UI/UX Design", image: "📱", link: "environment" },
-    { id: 8, name: "UI/UX Design", image: "📱", link: "digitalpainting" },
+    { id: 2, name: "3d Substance", image: "🏞️", link: "substance" },
+    { id: 3, name: "Game AI", image: "✏️", link: "gameAI" },
+    { id: 4, name: "Illustration", image: "🖥️", link: "illustration" },
+    { id: 5, name: "Story board", image: "🖌️", link: "storyboard" },
+    { id: 6, name: "Concept idea", image: "🖼️", link: "conceptidea" },
+    { id: 7, name: "Environment", image: "📱", link: "environment" },
+    { id: 8, name: "Digital pictures", image: "😐", link: "digitalpictures" },
   ];
 
   return (
