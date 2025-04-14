@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function DesktopNav({ navLinks }) {
   return (
@@ -10,14 +10,26 @@ function DesktopNav({ navLinks }) {
 
       <nav className="flex items-center gap-6">
         {navLinks.map((link) => (
-          <Link
+          <NavLink
             key={link.name}
             to={link.href}
-            className="text-sm font-medium text-[#A0A0A0] hover:text-white transition-colors relative group"
+            className={({ isActive }) =>
+              `text-sm font-medium transition-colors relative group ${
+                isActive ? "text-white" : "text-[#A0A0A0] hover:text-white"
+              }`
+            }
           >
-            {link.name}
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-myPurple transition-all duration-300 group-hover:w-full"></span>
-          </Link>
+            {({ isActive }) => (
+              <>
+                {link.name}
+                <span
+                  className={`absolute bottom-0 left-0 h-[2px] bg-myPurple transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                ></span>
+              </>
+            )}
+          </NavLink>
         ))}
       </nav>
     </div>

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { SheetClose, SheetContent } from "@/components/ui/sheet";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 import { LogIn, Pen, Search, ShoppingCart, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function MobileSidebar({ navLinks, setIsMenuOpen }) {
   const { setOpenModal } = useAuthContext();
@@ -68,14 +68,24 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
 
         <nav className="flex flex-col gap-4">
           {navLinks.map((link) => (
-            <Link
+            <NavLink
               key={link.name}
               to={link.href}
-              className="text-sm font-medium text-[#A0A0A0] hover:text-white transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
+              className={({ isActive }) =>
+                `text-sm font-medium transition-colors relative group ${
+                  isActive ? "text-myPurple" : "text-white"
+                }`
+              }
             >
-              {link.name}
-            </Link>
+              {({ isActive }) => (
+                <>
+                  {link.name}
+                  {!isActive && (
+                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-myPurple transition-all duration-300"></span>
+                  )}
+                </>
+              )}
+            </NavLink>
           ))}
         </nav>
       </div>

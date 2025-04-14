@@ -16,6 +16,7 @@ export default function Header() {
   const { openModal, setOpenModal } = useAuthContext();
 
   const navLinks = [
+    { name: "Home", href: "/category/characterDesign" },
     { name: "User", href: "/user" },
     { name: "Shop", href: "/shop" },
     { name: "Jobs", href: "/Jobs" },
