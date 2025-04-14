@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LogIn, Pen, Search, ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,16 +7,13 @@ import MobileNavHeader from "./MobileNavHeader";
 import MobileSidebar from "./MobileSidebar";
 import { Sheet } from "@/components/ui/sheet";
 import DesktopNav from "./DesktopNav";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import { useAuthContext } from "./../contexts/AuthContextProv";
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { openModal, setOpenModal } = useAuthContext();
 
   const navLinks = [
     { name: "User", href: "/user" },
@@ -26,11 +23,9 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b border-[#101014] bg-[#101014] backdrop-blur supports-[backdrop-filter]:bg-[#101014]/95 ${
-        isScrolled ? "shadow-sm shadow-myPurple/10" : ""
-      }`}
+      className={`sticky top-0 z-50 w-full supports-[backdrop-filter]:bg-[#101014] pt-2`}
     >
-      <div className=" flex h-16 items-center justify-between mx-auto">
+      <div className="flex h-16 items-center justify-between mx-auto">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           {/* Mobile Navigation */}
           <MobileNavHeader />
@@ -64,30 +59,59 @@ export default function Header() {
 
             <div className="flex gap-2">
               <Button
-                variant="outline"
-                size="sm"
+                onClick={() => setOpenModal("signup")}
                 className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
-                asChild
               >
-                <Link to="/signin">
-                  <Pen className="h-4 w-4 mr-2" />
-                  Sign Up
-                </Link>
+                <Pen className="h-4 w-4 mr-2" />
+                Sign Up
               </Button>
               <Button
-                size="sm"
+                onClick={() => setOpenModal("signin")}
                 className="bg-myPurple hover:bg-myPurple-hover text-white"
-                asChild
               >
-                <Link to="/signup">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Sign In
-                </Link>
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In
               </Button>
+
+              <SignIn
+                open={openModal === "signin"}
+                onOpenChange={(open) => setOpenModal(open ? "signin" : null)}
+                onSwitchToSignUp={() => setOpenModal("signup")}
+              />
+
+              <SignUp
+                open={openModal === "signup"}
+                onOpenChange={(open) => setOpenModal(open ? "signup" : null)}
+                onSwitchToSignIn={() => setOpenModal("signin")}
+              />
             </div>
           </div>
         </Sheet>
       </div>
     </header>
   );
+}
+
+{
+  /* <Button
+variant="outline"
+size="sm"
+className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
+asChild
+>
+<div onClick={handleOpenSignUp}>
+  <Pen className="h-4 w-4 mr-2" />
+  Sign Up
+</div>
+</Button>
+<Button
+size="sm"
+className="bg-myPurple hover:bg-myPurple-hover text-white"
+asChild
+>
+<div onClick={handleOpenSignIn}>
+  <LogIn className="h-4 w-4 mr-2" />
+  Sign In
+</div>
+</Button> */
 }

@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SheetClose, SheetContent } from "@/components/ui/sheet";
-import { Pen, Search, ShoppingCart, X } from "lucide-react";
+import { useAuthContext } from "@/contexts/AuthContextProv";
+import { LogIn, Pen, Search, ShoppingCart, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function MobileSidebar({ navLinks, setIsMenuOpen }) {
+  const { setOpenModal } = useAuthContext();
+
   return (
     <SheetContent
       side="left"
@@ -54,14 +58,11 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
 
           {/* sign Up Button in Mobile Menu  */}
           <Button
-            variant="outline"
-            className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white justify-start gap-2"
-            asChild
+            onClick={() => setOpenModal("signup")}
+            className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
           >
-            <Link to="/signin" onClick={() => setIsMenuOpen(false)}>
-              <Pen className="h-4 w-4" />
-              Sign Up
-            </Link>
+            <Pen className="h-4 w-4 mr-2" />
+            Sign Up
           </Button>
         </div>
 
