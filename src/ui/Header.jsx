@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { LogIn, Pen, Search, ShoppingCart, X } from "lucide-react";
+import {
+  LogIn,
+  Pen,
+  Search,
+  ShoppingCart,
+  FileText,
+  BriefcaseBusiness,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import MobileNavHeader from "./MobileNavHeader";
@@ -16,17 +22,32 @@ export default function Header() {
   const { openModal, setOpenModal } = useAuthContext();
 
   const navLinks = [
-    { name: "Home", href: "/category/characterDesign" },
+    { name: "Home", href: "/category" },
     { name: "User", href: "/user" },
     { name: "Shop", href: "/shop" },
-    { name: "Jobs", href: "/Jobs" },
+    {
+      name: "Jobs",
+      href: "/Jobs",
+      children: [
+        {
+          name: "Post Job",
+          href: "/Jobs/post",
+          icon: <FileText className="w-4 h-4 mr-2" />,
+        },
+        {
+          name: "Find Job",
+          href: "/Jobs/find",
+          icon: <BriefcaseBusiness className="w-4 h-4 mr-2" />,
+        },
+      ],
+    },
   ];
 
   return (
     <header
       className={`sticky top-0 z-50 w-full supports-[backdrop-filter]:bg-[#101014] pt-2`}
     >
-      <div className="flex h-16 items-center justify-between mx-auto">
+      <div className="flex h-15 items-center justify-between mx-auto">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           {/* Mobile Navigation */}
           <MobileNavHeader />

@@ -1,13 +1,23 @@
-/* eslint-disable no-unused-vars */
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SheetClose, SheetContent } from "@/components/ui/sheet";
 import { useAuthContext } from "@/contexts/AuthContextProv";
-import { LogIn, Pen, Search, ShoppingCart, X } from "lucide-react";
+import {
+  Pen,
+  Search,
+  ShoppingCart,
+  X,
+  FileText,
+  BriefcaseBusiness,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
-function MobileSidebar({ navLinks, setIsMenuOpen }) {
+export default function MobileSidebar({ navLinks }) {
   const { setOpenModal } = useAuthContext();
+  const [openJobsDropdown, setOpenJobsDropdown] = useState(false);
 
   return (
     <SheetContent
@@ -44,7 +54,6 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
               <Link to="/cart" className="flex items-center gap-2">
                 <div className="relative">
                   <ShoppingCart className="!w-5 !h-5" />
-
                   <span
                     className="absolute -top-3 -right-3 bg-myPurple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
                     aria-label="Cart items count"
@@ -56,7 +65,7 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
             </Button>
           </div>
 
-          {/* sign Up Button in Mobile Menu  */}
+          {/* Sign Up Button in Mobile Menu */}
           <Button
             onClick={() => setOpenModal("signup")}
             className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
@@ -66,31 +75,71 @@ function MobileSidebar({ navLinks, setIsMenuOpen }) {
           </Button>
         </div>
 
-        <nav className="flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.name}
-              to={link.href}
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors relative group ${
-                  isActive ? "text-myPurple" : "text-white"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  {link.name}
-                  {!isActive && (
-                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-myPurple transition-all duration-300"></span>
+        {/* Navigation Links */}
+        <nav className="flex flex-col gap-8">
+          {navLinks.map((link) => {
+            if (link.name === "Jobs") {
+              return (
+                <div key={link.name} className="flex flex-col gap-2">
+                  <button
+                    onClick={() => setOpenJobsDropdown((prev) => !prev)}
+                    className="flex items-center justify-start space-x-3  cursor-pointer w-full text-md font-medium text-white"
+                  >
+                    <span>{link.name}</span>
+                    <span className="mt-0.5">
+                      {openJobsDropdown ? (
+                        <ChevronUp className="w-4 h-4" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4" />
+                      )}
+                    </span>
+                  </button>
+
+                  {openJobsDropdown && (
+                    <div className="ml-4 mt-2 flex flex-col gap-4">
+                      <NavLink
+                        to="/Jobs/post"
+                        className="flex items-center gap-2 text-sm text-white hover:text-myPurple"
+                      >
+                        <FileText className="w-4 h-4" />
+                        Post Job
+                      </NavLink>
+                      <NavLink
+                        to="/Jobs/find"
+                        className="flex items-center gap-2 text-sm text-white hover:text-myPurple"
+                      >
+                        <BriefcaseBusiness className="w-4 h-4" />
+                        Find Job
+                      </NavLink>
+                    </div>
                   )}
-                </>
-              )}
-            </NavLink>
-          ))}
+                </div>
+              );
+            }
+
+            return (
+              <NavLink
+                key={link.name}
+                to={link.href}
+                className={({ isActive }) =>
+                  `text-md font-medium transition-colors relative group ${
+                    isActive ? "text-myPurple" : "text-white"
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {link.name}
+                    {!isActive && (
+                      <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-myPurple transition-all duration-300"></span>
+                    )}
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
         </nav>
       </div>
     </SheetContent>
   );
 }
-
-export default MobileSidebar;
