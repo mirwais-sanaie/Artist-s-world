@@ -8,7 +8,7 @@ import User from "./pages/User";
 import CharacterDesign from "./ui/CharacterDesign";
 import Gallery from "./ui/Gallery";
 import { AuthContextProv } from "./contexts/AuthContextProv";
-import ArtworkPage from "./ui/ArtWorkPage";
+import ArtworkPage from "./ui/ArtworkPage";
 
 function App() {
   return (
