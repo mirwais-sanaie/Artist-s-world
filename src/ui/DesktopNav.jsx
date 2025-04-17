@@ -12,14 +12,14 @@ function DesktopNav({ navLinks }) {
         {navLinks.map((link) =>
           link.children ? (
             // For links with dropdown
-            <div key={link.name} className="relative group">
+            <div key={link.name} className="relative group ">
               <div
-                className={`text-sm font-medium transition-colors relative group-hover:text-white text-[#A0A0A0] hover:text-white cursor-pointer`}
+                className={`text-sm  font-medium transition-colors relative group-hover:text-white text-[#A0A0A0] hover:text-white cursor-pointer`}
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 h-[2px] bg-myPurple transition-all duration-300 w-0 group-hover:w-full "></span>
               </div>
-              <div className="absolute left-0 mt-2 bg-myGray-dark shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-200 z-10 w-40">
+              <div className="absolute  left-0 mt-2 bg-myGray-dark shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-200 z-100 w-40">
                 {link.children.map((child) => (
                   <NavLink
                     key={child.name}

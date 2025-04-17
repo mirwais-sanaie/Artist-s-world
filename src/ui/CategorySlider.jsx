@@ -20,7 +20,7 @@ function CategorySlider() {
   ];
 
   return (
-    <div className="sticky top-16 py-2 z-50 bg-[#0e0e0e]">
+    <div className="sticky top-16 py-2 z-20 bg-[#0e0e0e]">
       <Carousel className="w-full">
         <CarouselContent className="-ml-1">
           {categories.map((category) => (

@@ -8,6 +8,7 @@ import User from "./pages/User";
 import CharacterDesign from "./ui/CharacterDesign";
 import Gallery from "./ui/Gallery";
 import { AuthContextProv } from "./contexts/AuthContextProv";
+import ArtworkPage from "./ui/ArtWorkPage";
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
             />
             <Route path="category" element={<Home />}>
               <Route path="characterDesign" element={<CharacterDesign />} />
+              <Route
+                path="/category/characterDesign/:id"
+                element={<ArtworkPage />}
+              />
               <Route
                 path="substance"
                 element={<Gallery text="3d Substance" numImg={10} from={230} />}
