@@ -3,9 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 function DesktopNav({ navLinks }) {
   return (
     <div className="hidden md:flex items-center gap-10">
-      <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-        <span className="text-myPurple">Art</span>
-        <span className="text-white">Center</span>
+      <Link to="/" className="">
+        <img src="/Logo.png" alt="" width={55} height={55} />
       </Link>
 
       <nav className="flex items-center gap-6">
