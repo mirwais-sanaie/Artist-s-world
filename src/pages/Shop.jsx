@@ -1,6 +1,6 @@
 function Shop() {
   return (
-    <div>
+    <div className="text-center text-5xl font-extrabold mt-50">
       <h1>Shops</h1>
     </div>
   );

@@ -1,4 +1,3 @@
-// components/ArtPost.jsx
 import { useLocation } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -57,7 +56,6 @@ export default function Post() {
           </div>
         </div>
 
-        {/* Right side - User details (20% width) */}
         <div className="lg:w-1/5 space-y-6">
           {/* Artist info */}
           <div className="flex items-center gap-3">
@@ -78,7 +76,6 @@ export default function Post() {
             Follow
           </Button>
 
-          {/* Artwork details */}
           <div className="space-y-4">
             <div>
               <h2 className="text-xl font-bold text-white">{post.title}</h2>
@@ -97,7 +94,6 @@ export default function Post() {
               ))}
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-3 gap-4 text-center text-sm">
               <div>
                 <p className="text-gray-400">Views</p>
@@ -113,7 +109,6 @@ export default function Post() {
               </div>
             </div>
 
-            {/* Published date */}
             <p className="text-xs text-gray-500">
               Published: {new Date(post.publishedAt).toLocaleDateString()}
             </p>

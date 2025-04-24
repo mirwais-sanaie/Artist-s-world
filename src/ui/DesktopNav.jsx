@@ -13,7 +13,7 @@ function DesktopNav({ navLinks }) {
             // For links with dropdown
             <div key={link.name} className="relative group ">
               <div
-                className={`text-sm  font-medium transition-colors relative group-hover:text-white text-[#A0A0A0] hover:text-white cursor-pointer`}
+                className={`text-[15px] font-medium transition-colors relative group-hover:text-white text-[#A0A0A0] hover:text-white cursor-pointer`}
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 h-[2px] bg-myPurple transition-all duration-300 w-0 group-hover:w-full "></span>
@@ -37,7 +37,7 @@ function DesktopNav({ navLinks }) {
               key={link.name}
               to={link.href}
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors relative group ${
+                `text-[15px] font-medium transition-colors relative group ${
                   isActive ? "text-white" : "text-[#A0A0A0] hover:text-white"
                 }`
               }

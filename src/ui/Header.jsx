@@ -6,6 +6,7 @@ import {
   ShoppingCart,
   FileText,
   BriefcaseBusiness,
+  ArrowUpFromLine,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,13 +14,15 @@ import MobileNavHeader from "./MobileNavHeader";
 import MobileSidebar from "./MobileSidebar";
 import { Sheet } from "@/components/ui/sheet";
 import DesktopNav from "./DesktopNav";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import SignIn from "../features/authentication/SignIn";
+import SignUp from "../features/authentication/SignUp";
 import { useAuthContext } from "./../contexts/AuthContextProv";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openModal, setOpenModal } = useAuthContext();
+  const { user } = useAuthContext();
 
   const navLinks = [
     { name: "Home", href: "/category" },
@@ -41,7 +44,7 @@ export default function Header() {
       ],
     },
   ];
-
+  console.log(user?.aud);
   return (
     <header
       className={`sticky top-0 z-50 w-full supports-[backdrop-filter]:bg-[#101014] pt-2`}
@@ -69,7 +72,7 @@ export default function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative text-myGray-midum hover:text-myGray hover:bg-primary"
+              className="relative text-myGray-midum cursor-pointer hover:text-myGray hover:bg-primary"
             >
               <ShoppingCart className="!w-5 !h-5" />
 
@@ -78,61 +81,67 @@ export default function Header() {
               </span>
             </Button>
 
-            <div className="flex gap-2">
-              <Button
-                onClick={() => setOpenModal("signup")}
-                className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
-              >
-                <Pen className="h-4 w-4 mr-2" />
-                Sign Up
-              </Button>
-              <Button
-                onClick={() => setOpenModal("signin")}
-                className="bg-myPurple hover:bg-myPurple-hover text-white"
-              >
-                <LogIn className="h-4 w-4 mr-2" />
-                Sign In
-              </Button>
+            {!(user?.aud === "authenticated") && (
+              <>
+                <Link
+                  to={"/createpost"}
+                  variant="ghost"
+                  size="icon"
+                  title="Create new post"
+                  className="text-myGray-midum cursor-pointer hover:text-myGray hover:bg-primary"
+                >
+                  <ArrowUpFromLine className="!w-6 !h-6" />
+                </Link>
 
-              <SignIn
-                open={openModal === "signin"}
-                onOpenChange={(open) => setOpenModal(open ? "signin" : null)}
-                onSwitchToSignUp={() => setOpenModal("signup")}
-              />
+                <div>
+                  <img
+                    class="avatar roundeddull"
+                    src="https://www.gravatar.com/avatar/0c4f50181f487eb9824604d450bc6196.jpg?size=240&amp;d=https%3A%2F%2Fwww.artstation.com%2Fassets%2Fdefault_avatar.jpg"
+                    alt="MirwaisSanaie"
+                    data-js-img-src="mediumAvatarUrl"
+                    width="30"
+                    height="30"
+                    data-js-img-alt="fullName"
+                  ></img>
+                </div>
 
-              <SignUp
-                open={openModal === "signup"}
-                onOpenChange={(open) => setOpenModal(open ? "signup" : null)}
-                onSwitchToSignIn={() => setOpenModal("signin")}
-              />
-            </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setOpenModal("signup")}
+                    className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white cursor-pointer"
+                  >
+                    <Pen className="h-4 w-4 mr-2" />
+                    Sign Up
+                  </Button>
+                  <Button
+                    onClick={() => setOpenModal("signin")}
+                    className="bg-myPurple hover:bg-myPurple-hover text-white cursor-pointer"
+                  >
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Button>
+
+                  <SignIn
+                    open={openModal === "signin"}
+                    onOpenChange={(open) =>
+                      setOpenModal(open ? "signin" : null)
+                    }
+                    onSwitchToSignUp={() => setOpenModal("signup")}
+                  />
+
+                  <SignUp
+                    open={openModal === "signup"}
+                    onOpenChange={(open) =>
+                      setOpenModal(open ? "signup" : null)
+                    }
+                    onSwitchToSignIn={() => setOpenModal("signin")}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </Sheet>
       </div>
     </header>
   );
-}
-
-{
-  /* <Button
-variant="outline"
-size="sm"
-className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
-asChild
->
-<div onClick={handleOpenSignUp}>
-  <Pen className="h-4 w-4 mr-2" />
-  Sign Up
-</div>
-</Button>
-<Button
-size="sm"
-className="bg-myPurple hover:bg-myPurple-hover text-white"
-asChild
->
-<div onClick={handleOpenSignIn}>
-  <LogIn className="h-4 w-4 mr-2" />
-  Sign In
-</div>
-</Button> */
 }

@@ -2,15 +2,14 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 import CarouselSlider from "../ui/CarouselSlider";
 import CategorySlider from "../ui/CategorySlider";
 import { useAuthContext } from "@/contexts/AuthContextProv";
-import SignIn from "../ui/SignIn";
-import SignUp from "../ui/SignUp";
+import SignIn from "../features/authentication/SignIn";
+import SignUp from "../features/authentication/SignUp";
 
 function Home() {
   const { openSignUp, openSignIn } = useAuthContext();
   const location = useLocation();
   const params = useParams();
 
-  // Base paths
   const HIDE_SLIDERS_BASE_PATHS = ["/category/characterDesign", "/other-path"];
 
   const shouldHideSliders = HIDE_SLIDERS_BASE_PATHS.some(

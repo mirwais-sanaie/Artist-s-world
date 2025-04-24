@@ -6,12 +6,15 @@ const AuthContext = createContext();
 
 function AuthContextProv({ children }) {
   const [openModal, setOpenModal] = useState(false);
+  const [user, setUser] = useState(null);
 
   return (
     <AuthContext.Provider
       value={{
         openModal,
         setOpenModal,
+        user,
+        setUser,
       }}
     >
       {children}

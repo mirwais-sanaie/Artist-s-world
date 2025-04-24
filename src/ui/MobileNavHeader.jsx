@@ -9,7 +9,6 @@ function MobileNavHeader() {
 
   return (
     <div className="md:hidden flex items-center justify-between w-full relative">
-      {/* Menu button - left aligned */}
       <div className="flex-1 flex justify-start">
         <SheetTrigger asChild>
           <Button
@@ -29,7 +28,6 @@ function MobileNavHeader() {
         </Link>
       </div>
 
-      {/* Sign In button - right aligned */}
       <div className="flex-1 flex justify-end">
         <Button
           onClick={() => setOpenModal("signin")}

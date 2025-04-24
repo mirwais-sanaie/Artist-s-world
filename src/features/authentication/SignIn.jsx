@@ -46,7 +46,7 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
               <Label htmlFor="email">Email</Label>
               <Input
                 className={
-                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple"
+                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
                 }
                 id="email"
                 type="email"
@@ -57,7 +57,7 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
               <Label htmlFor="password">Password</Label>
               <Input
                 className={
-                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple"
+                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple text-white selection:bg-myPurple"
                 }
                 id="password"
                 type="password"
