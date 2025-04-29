@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +10,41 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import GoogleIcon from "./GoogleIcon";
+import { useForm } from "react-hook-form";
+import { useSignIn } from "@/services/apiAuth";
+import { toast } from "react-toastify";
+import { useAuthContext } from "@/contexts/AuthContextProv";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
+  const { register, handleSubmit, reset } = useForm();
+  const { mutate: signIn, isPending } = useSignIn();
+  const { setUser } = useAuthContext();
+  const [showPassword, setShowPassword] = useState(false);
+
+  function onSubmit(data) {
+    signIn(data, {
+      onSuccess: (data) => {
+        setUser(data?.user);
+        toast.success("Logged in successfully!", {
+          position: "top-center",
+        });
+        reset();
+      },
+      onError: (error) => {
+        toast.error(error.message, {
+          position: "top-center",
+        });
+      },
+    });
+  }
+
+  function onError(error) {
+    toast.error(error.message, {
+      position: "top-center",
+    });
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px] bg-background border-none shadow-lg bg-primary text-white">
@@ -41,36 +75,58 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
             </div>
           </div>
 
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                className={
-                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
-                }
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-              />
+          <form onSubmit={handleSubmit(onSubmit, onError)}>
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
+                  className="border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                />
+              </div>
+
+              <div className="grid gap-2 relative">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="password"
+                  className="pr-10 border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple text-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-[30px] text-gray-400 hover:text-white"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full mt-2 bg-myPurple hover:bg-myPurple-hover"
+                disabled={isPending}
+              >
+                {isPending ? "Signing In..." : "Sign In"}
+              </Button>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                className={
-                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple text-white selection:bg-myPurple"
-                }
-                id="password"
-                type="password"
-                placeholder="password"
-              />
-            </div>
-            <Button
-              type="submit"
-              className="w-full mt-2 bg-myPurple hover:bg-myPurple-hover"
-            >
-              Sign In
-            </Button>
-          </div>
+          </form>
         </div>
 
         <div className="text-sm text-center text-gray-400">
@@ -82,7 +138,7 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
               onSwitchToSignUp();
             }}
           >
-            Sign up
+            Sign Up
           </span>
         </div>
       </DialogContent>

@@ -13,30 +13,26 @@ import { useForm } from "react-hook-form";
 import { useSignUp } from "@/services/apiAuth";
 import { toast } from "react-toastify";
 import { useAuthContext } from "@/contexts/AuthContextProv";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
+  const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const { mutate: signUp, isPending } = useSignUp();
   const { setUser } = useAuthContext();
 
   function onSubmit(data) {
-    console.log(data);
     signUp(data, {
       onSuccess: (data) => {
-        console.log("User signed up successfully:", data);
-        setUser(data.user);
-        toast.success("Logid succesfully!", {
-          position: "top-center",
-        });
+        setUser(data?.user);
+        toast.success("Signed up successfully!", { position: "top-center" });
         reset();
       },
       onError: (error) => {
-        console.error("Sign up error:", error.message);
+        toast.error(error.message, { position: "top-center" });
       },
     });
-  }
-  function onError(error) {
-    console.log(error);
   }
 
   return (
@@ -61,44 +57,49 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
           </Button>
         </div>
 
-        <form action="" onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
-                className={
-                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
-                }
+                {...register("email", { required: "Email is required" })}
                 id="email"
                 type="email"
                 placeholder="your@email.com"
+                className={
+                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
+                }
               />
             </div>
-            <div className="grid gap-2">
+            {/* password info */}
+            <div className="grid gap-2 relative">
               <Label htmlFor="password">Password</Label>
               <Input
                 {...register("password", {
                   required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
+                  minLength: 6,
                 })}
-                className={
-                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple text-white selection:bg-myPurple"
-                }
                 id="password"
-                type="password"
-                placeholder="password"
+                type={showPassword ? "text" : "password"}
+                className={
+                  "pr-10 border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
+                }
+                placeholder="Enter your password"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-[38px] text-gray-400 hover:text-white"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
             </div>
+            {/* */}
+
             <Button
               type="submit"
               className="w-full mt-2 bg-myPurple hover:bg-myPurple-hover"
@@ -110,7 +111,7 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
         </form>
 
         <div className="text-sm text-center text-gray-400">
-          Already have an account?{" "}
+          Already have an account?&nbsp;
           <span
             className="underline-offset-4 hover:underline cursor-pointer"
             onClick={() => {

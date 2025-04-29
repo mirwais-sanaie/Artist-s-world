@@ -7,6 +7,7 @@ import {
   FileText,
   BriefcaseBusiness,
   ArrowUpFromLine,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,11 +19,12 @@ import SignIn from "../features/authentication/SignIn";
 import SignUp from "../features/authentication/SignUp";
 import { useAuthContext } from "./../contexts/AuthContextProv";
 import { Link } from "react-router-dom";
+import { signOut } from "@/services/apiAuth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openModal, setOpenModal } = useAuthContext();
-  const { user } = useAuthContext();
+  const { user, setUser } = useAuthContext();
 
   const navLinks = [
     { name: "Home", href: "/category" },
@@ -44,7 +46,13 @@ export default function Header() {
       ],
     },
   ];
-  console.log(user?.aud);
+
+  function handleLogOut() {
+    signOut();
+    setUser(null);
+    console.log(user?.aud);
+  }
+  // console.log(user?.aud);
   return (
     <header
       className={`sticky top-0 z-50 w-full supports-[backdrop-filter]:bg-[#101014] pt-2`}
@@ -81,7 +89,7 @@ export default function Header() {
               </span>
             </Button>
 
-            {!(user?.aud === "authenticated") && (
+            {user?.aud === "authenticated" ? (
               <>
                 <Link
                   to={"/createpost"}
@@ -95,16 +103,24 @@ export default function Header() {
 
                 <div>
                   <img
-                    class="avatar roundeddull"
+                    className="rounded-full border-2 border-myGray-muted hover:border-myPurple cursor-pointer"
                     src="https://www.gravatar.com/avatar/0c4f50181f487eb9824604d450bc6196.jpg?size=240&amp;d=https%3A%2F%2Fwww.artstation.com%2Fassets%2Fdefault_avatar.jpg"
-                    alt="MirwaisSanaie"
-                    data-js-img-src="mediumAvatarUrl"
-                    width="30"
-                    height="30"
-                    data-js-img-alt="fullName"
+                    alt=""
+                    width="33"
+                    height="33"
                   ></img>
                 </div>
 
+                <Button
+                  onClick={handleLogOut}
+                  className="bg-myPurple hover:bg-myPurple-hover text-white cursor-pointer"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Log out
+                </Button>
+              </>
+            ) : (
+              <>
                 <div className="flex gap-2">
                   <Button
                     onClick={() => setOpenModal("signup")}

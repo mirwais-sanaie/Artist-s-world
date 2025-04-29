@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import { ToastContainer } from "react-toastify";
@@ -20,7 +19,6 @@ function AppLayout() {
           draggable
           pauseOnHover
           theme="dark"
-          // transition={Bounce}
         />
       </main>
     </div>
