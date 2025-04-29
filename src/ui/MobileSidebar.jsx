@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SheetClose, SheetContent } from "@/components/ui/sheet";
+import { SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 import {
   Pen,
@@ -14,23 +14,27 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
+import LogOut from "@/features/authentication/LogOut";
 
 export default function MobileSidebar({ navLinks }) {
-  const { setOpenModal } = useAuthContext();
+  const { setOpenModal, user } = useAuthContext();
   const [openJobsDropdown, setOpenJobsDropdown] = useState(false);
 
   return (
     <SheetContent
+      aria-describedby={undefined}
       side="left"
       className="w-[300px] bg-primary border-r border-[#1E1E24] [&>button]:hidden px-4 "
     >
-      <div className="relative">
-        <SheetClose asChild>
-          <button className="absolute top-5 right-2 text-white hover:text-myGray">
-            <X className="w-6 h-6" />
-          </button>
-        </SheetClose>
-      </div>
+      <SheetTitle>
+        <div className="relative">
+          <SheetClose asChild>
+            <button className="absolute top-5 right-2 text-white hover:text-myGray">
+              <X className="w-6 h-6" />
+            </button>
+          </SheetClose>
+        </div>
+      </SheetTitle>
 
       <div className="flex flex-col gap-8 pt-10">
         {/* Search Bar in Mobile Menu */}
@@ -65,14 +69,18 @@ export default function MobileSidebar({ navLinks }) {
             </Button>
           </div>
 
-          {/* Sign Up Button in Mobile Menu */}
-          <Button
-            onClick={() => setOpenModal("signup")}
-            className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
-          >
-            <Pen className="h-4 w-4 mr-2" />
-            Sign Up
-          </Button>
+          {user?.aud === "authenticated" ? (
+            // <LogOut />
+            <Button className="text-white">Hello</Button>
+          ) : (
+            <Button
+              onClick={() => setOpenModal("signup")}
+              className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"
+            >
+              <Pen className="h-4 w-4 mr-2" />
+              Sign Up
+            </Button>
+          )}
         </div>
 
         {/* Navigation Links */}

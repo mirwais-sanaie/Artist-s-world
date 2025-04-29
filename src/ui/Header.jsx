@@ -19,15 +19,24 @@ import SignIn from "../features/authentication/SignIn";
 import SignUp from "../features/authentication/SignUp";
 import { useAuthContext } from "./../contexts/AuthContextProv";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { signOut } from "@/services/apiAuth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { openModal, setOpenModal } = useAuthContext();
-  const { user, setUser } = useAuthContext();
+  const { openModal, setOpenModal, isLogoutOpen, setIsLogoutOpen, setUser } =
+    useAuthContext();
+  const { user } = useAuthContext();
 
   const navLinks = [
-    { name: "Home", href: "/category" },
+    { name: "Home", href: "/category/characterDesign" },
     { name: "Shop", href: "/shop" },
     {
       name: "Jobs",
@@ -50,9 +59,8 @@ export default function Header() {
   function handleLogOut() {
     signOut();
     setUser(null);
-    console.log(user?.aud);
+    setIsLogoutOpen(false);
   }
-  // console.log(user?.aud);
   return (
     <header
       className={`sticky top-0 z-50 w-full supports-[backdrop-filter]:bg-[#101014] pt-2`}
@@ -83,7 +91,6 @@ export default function Header() {
               className="relative text-myGray-midum cursor-pointer hover:text-myGray hover:bg-primary"
             >
               <ShoppingCart className="!w-5 !h-5" />
-
               <span className="absolute -top-1 -right-1 bg-myPurple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 3
               </span>
@@ -112,12 +119,41 @@ export default function Header() {
                 </div>
 
                 <Button
-                  onClick={handleLogOut}
+                  onClick={() => setIsLogoutOpen(true)}
                   className="bg-myPurple hover:bg-myPurple-hover text-white cursor-pointer"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Log out
                 </Button>
+
+                {/* Logout Confirmation Dialog */}
+                <Dialog open={isLogoutOpen} onOpenChange={setIsLogoutOpen}>
+                  <DialogContent className="sm:max-w-[425px] bg-background border-none shadow-lg bg-primary text-white">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold">
+                        Confirm Logout
+                      </DialogTitle>
+                      <DialogDescription className="text-gray-400">
+                        Are you sure you want to sign out?
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="mt-4 flex justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsLogoutOpen(false)}
+                        className="text-white border-gray-600 hover:bg-gray-700"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleLogOut}
+                        className="bg-red-500 hover:bg-red-600 text-white"
+                      >
+                        Log Out
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </>
             ) : (
               <>

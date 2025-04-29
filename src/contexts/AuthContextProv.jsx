@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 function AuthContextProv({ children }) {
   const [openModal, setOpenModal] = useState(false);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -48,6 +49,8 @@ function AuthContextProv({ children }) {
         setOpenModal,
         user,
         setUser,
+        isLogoutOpen,
+        setIsLogoutOpen,
       }}
     >
       {children}
