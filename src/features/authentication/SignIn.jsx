@@ -30,18 +30,13 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
           position: "top-center",
         });
         reset();
+        onOpenChange(false);
       },
       onError: (error) => {
         toast.error(error.message, {
           position: "top-center",
         });
       },
-    });
-  }
-
-  function onError(error) {
-    toast.error(error.message, {
-      position: "top-center",
     });
   }
 
@@ -56,13 +51,14 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          <Button
+          {/* <Button
+            onClick={handleGoogleLogin}
             variant="outline"
             className="w-full gap-2 hover:bg-myGray-dark"
           >
             <GoogleIcon className="h-4 w-4" />
             Continue with Google
-          </Button>
+          </Button> */}
 
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
@@ -75,7 +71,7 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit, onError)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>

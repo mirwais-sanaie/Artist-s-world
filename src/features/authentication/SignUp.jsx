@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import GoogleIcon from "./GoogleIcon";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -19,11 +18,11 @@ import { useState } from "react";
 export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  const { mutate: signUp, isPending } = useSignUp();
+  const { mutate: signUpWithEmail, isPending } = useSignUp();
   const { setUser } = useAuthContext();
 
   function onSubmit(data) {
-    signUp(data, {
+    signUpWithEmail(data, {
       onSuccess: (data) => {
         setUser(data?.user);
         toast.success("Signed up successfully!", { position: "top-center" });
@@ -34,6 +33,27 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
       },
     });
   }
+
+  // const handleGoogleSignUp = () => {
+  //   signUpWithGoogle(undefined, {
+  //     onSuccess: (data) => {
+  //       const user = {
+  //         id: data.user.id,
+  //         email: data.user.email,
+  //         user_metadata: {
+  //           full_name: data.user.user_metadata?.full_name || "",
+  //           avatar_url: data.user.user_metadata?.avatar_url || "",
+  //         },
+  //       };
+  //       setUser(user);
+  //       toast.success("Google sign up successful!", { position: "top-center" });
+  //       onOpenChange(false);
+  //     },
+  //     onError: (error) => {
+  //       toast.error(error.message, { position: "top-center" });
+  //     },
+  //   });
+  // };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,15 +67,17 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
+        {/* <div className="grid gap-4 py-4">
           <Button
+            onClick={handleGoogleSignUp}
             variant="outline"
             className="w-full gap-2 hover:bg-myGray-dark cursor-pointer"
+            disabled={isLoading}
           >
             <GoogleIcon className="h-4 w-4" />
-            Sign up with Google
+            {isLoading ? "Signing up..." : "Sign up with Google"}
           </Button>
-        </div>
+        </div> */}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4">
@@ -71,7 +93,6 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
                 }
               />
             </div>
-            {/* password info */}
             <div className="grid gap-2 relative">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -98,7 +119,6 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
                 )}
               </button>
             </div>
-            {/* */}
 
             <Button
               type="submit"
