@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
-import Shop from "./pages/Shop";
+import Companies from "./pages/Companies";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import Cart from "./pages/Cart";
@@ -75,7 +75,7 @@ function App() {
                   }
                 />
               </Route>
-              <Route path="shop" element={<Shop />} />
+              <Route path="companies" element={<Companies />} />
               <Route path="jobs" element={<Jobs />} />
               <Route path="cart" element={<Cart />} />
               <Route path="user" element={<User />} />
