@@ -14,7 +14,6 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-import LogOut from "@/features/authentication/LogOut";
 
 export default function MobileSidebar({ navLinks }) {
   const { setOpenModal, user } = useAuthContext();

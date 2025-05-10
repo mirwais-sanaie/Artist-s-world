@@ -1,6 +1,15 @@
+import { ArrowDown, ArrowUp, ChevronDown, ChevronUp } from "lucide-react";
+import { useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 function DesktopNav({ navLinks }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropDownRef = useRef(null);
+
+  const handlerLeave = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className="hidden md:flex items-center gap-10">
       <Link to="/" className="">
@@ -11,25 +20,42 @@ function DesktopNav({ navLinks }) {
         {navLinks.map((link) =>
           link.children ? (
             // For links with dropdown
-            <div key={link.name} className="relative group ">
+            <div key={link.name} className="relative">
               <div
-                className={`text-[15px] font-medium transition-colors relative group-hover:text-white text-[#A0A0A0] hover:text-white cursor-pointer`}
+                className="cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
               >
-                {link.name}
-                <span className="absolute bottom-0 left-0 h-[2px] bg-myPurple transition-all duration-300 w-0 group-hover:w-full "></span>
+                <div
+                  className={`text-[15px] flex font-medium transition-colors relative text-[#A0A0A0] hover:text-white`}
+                >
+                  {link.name}
+                  {isOpen ? (
+                    <ChevronUp className="w-4 h-4 absolute top-1 -right-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 absolute top-1 -right-4" />
+                  )}
+                </div>
               </div>
-              <div className="absolute  left-0 mt-2 bg-myGray-dark shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-200 z-100 w-40">
-                {link.children.map((child) => (
-                  <NavLink
-                    key={child.name}
-                    to={child.href}
-                    className="flex items-center px-4 py-2 text-sm text-white hover:bg-myGray-muted"
-                  >
-                    {child.icon}
-                    {child.name}
-                  </NavLink>
-                ))}
-              </div>
+
+              {isOpen && (
+                <div
+                  ref={dropDownRef}
+                  onMouseLeave={handlerLeave}
+                  className="absolute left-0 mt-2 bg-myGray-dark shadow-lg transition-all duration-200 z-100 w-40"
+                >
+                  {link.children?.map((child) => (
+                    <NavLink
+                      key={child.name}
+                      to={child.href}
+                      className="flex items-center px-4 py-2 text-sm text-white hover:bg-myGray-muted"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {child.icon}
+                      {child.name}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
             </div>
           ) : (
             // For normal links
@@ -42,16 +68,12 @@ function DesktopNav({ navLinks }) {
                 }`
               }
             >
-              {({ isActive }) => (
-                <>
-                  {link.name}
-                  <span
+              {link.name}
+              {/* <span
                     className={`absolute bottom-0 left-0 h-[2px] bg-myPurple transition-all duration-300 ${
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     }`}
-                  ></span>
-                </>
-              )}
+                  ></span> */}
             </NavLink>
           )
         )}
