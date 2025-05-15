@@ -1,62 +1,72 @@
-import { useState, useRef } from "react";
+/* eslint-disable no-unused-vars */
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-// import { useAuthContext } from "@/contexts/AuthContextProv";
-import { createPost } from "@/services/apiPosts";
+import ErrorText from "@/ui/ErrorText";
+import { useCreatePost } from "./useCreatePost";
+import { useEditPost } from "./useEditPost";
 
-export default function CreatePost() {
+const categories = [
+  "Character Design",
+  "Environment Art",
+  "Concept Art",
+  "Illustration",
+  "3D Modeling",
+  "Digital Painting",
+];
+
+export default function CreatePost({ postToEdit = {}, onCloseModal }) {
+  const { isEditing, editPost } = useEditPost();
+  const { isLoading, createPost } = useCreatePost();
+  const isWorking = isLoading || isEditing;
+  const { id: editId, ...editValues } = postToEdit;
+  const isEditSession = Boolean(editId);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // const { user } = useAuthContext();
-  const { register, handleSubmit, setValue, reset } = useForm({
-    defaultValues: {
-      tags: [],
-      category: "Character Design",
-    },
+  const { register, handleSubmit, setValue, reset, formState } = useForm({
+    defaultValues: isEditSession
+      ? editValues
+      : { tags: [], category: "Character Design" },
   });
+  const { errors } = formState;
 
   // State management
-  const fileInputRef = useRef(null);
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
-  const categories = [
-    "Character Design",
-    "Environment Art",
-    "Concept Art",
-    "Illustration",
-    "3D Modeling",
-    "Digital Painting",
-  ];
+  function onSubmit(data) {
+    const image = typeof data.image === "string" ? data.image : data.image[0];
 
-  // Form handlers
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      console.log("Form data:", data);
-      await createPost(data); // Now properly awaited
-
-      // Reset form
-      reset();
-      setTags([]);
-      setTagInput("");
-      setSelectedFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-
-      setIsSuccess(true);
-      setTimeout(() => setIsSuccess(false), 3000);
-    } catch (error) {
-      console.error("Submission error:", error);
-      // You might want to set some error state here
-    } finally {
-      setIsSubmitting(false);
+    if (isEditSession) {
+      setIsSubmitting(true);
+      editPost(
+        { newCabinData: { ...data, image }, id: editId },
+        {
+          onSuccess: (data) => {
+            reset();
+            setTags([]);
+            setTagInput("");
+          },
+        }
+      );
+    } else {
+      setIsSubmitting(true);
+      createPost(
+        { ...data, image: image },
+        {
+          onSuccess: (data) => {
+            reset();
+            setTags([]);
+            setTagInput("");
+          },
+        }
+      );
     }
-  };
+  }
 
   const onError = (errors) => {
     console.log("Form errors:", errors);
@@ -78,18 +88,6 @@ export default function CreatePost() {
     setTags(updatedTags);
     setValue("tags", updatedTags);
   };
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-  };
-  const handleRemoveFile = () => {
-    setSelectedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
@@ -97,111 +95,17 @@ export default function CreatePost() {
 
       <form className="space-y-8" onSubmit={handleSubmit(onSubmit, onError)}>
         {/* Image Upload */}
-        <div className="space-y-3">
-          <Label htmlFor="image" className="text-myGray-midum font-medium">
-            Artwork Image
-          </Label>
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-center w-full">
-              <label
-                htmlFor="image"
-                className={`flex flex-col items-center justify-center w-full h-64 border-2 ${
-                  selectedFile
-                    ? "border-myPurple"
-                    : "border-dashed border-myGray-muted"
-                } rounded-lg cursor-pointer hover:border-myPurple transition-colors bg-color-card hover:bg-color-card-hover`}
-              >
-                {selectedFile ? (
-                  <div className="flex flex-col items-center justify-center p-4 text-center">
-                    <svg
-                      className="w-12 h-12 mb-3 text-myPurple"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <p className="text-sm text-myGray font-medium">
-                      {selectedFile.name}
-                    </p>
-                    <p className="text-xs text-myGray-muted mt-1">
-                      {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-4 text-myGray-muted"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                      />
-                    </svg>
-                    <p className="mb-2 text-sm text-myGray-muted">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
-                    </p>
-                    <p className="text-xs text-myGray-muted">
-                      PNG, JPG or GIF (MAX. 10MB)
-                    </p>
-                  </div>
-                )}
-                <Input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
-            </div>
 
-            {selectedFile && (
-              <div className="flex items-center justify-between bg-myGray-dark/50 rounded-md px-4 py-2 border border-myGray-muted">
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4 text-myGray-midum"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span className="text-sm text-myGray truncate max-w-xs">
-                    {selectedFile.name}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleRemoveFile}
-                  className="text-myGray-muted hover:text-myPurple transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-          </div>
+        <div className="space-y-3">
+          <input
+            type="file"
+            accept="image/*"
+            {...register("image", {
+              required: isEditSession ? false : "This field is required",
+            })}
+            className="file:bg-myPurple file:text-white file:border-none file:px-4 file:py-2 file:rounded file:cursor-pointer
+             bg-color-card text-myGray border border-border focus:ring-2 focus:ring-myPurple"
+          />
         </div>
 
         {/* Title */}
@@ -209,6 +113,7 @@ export default function CreatePost() {
           <Label htmlFor="title" className="text-myGray-midum font-medium">
             Title
           </Label>
+
           <Input
             {...register("title", { required: "Title is required" })}
             type="text"
@@ -216,6 +121,9 @@ export default function CreatePost() {
             placeholder="Enter your artwork title"
             className="bg-color-card border-border focus:ring-2 focus:ring-myPurple focus:border-transparent text-myGray"
           />
+          {errors?.title?.message && (
+            <ErrorText>{errors.title.message}</ErrorText>
+          )}
         </div>
 
         {/* Description */}
@@ -227,19 +135,24 @@ export default function CreatePost() {
             Description
           </Label>
           <Textarea
-            {...register("description")}
+            {...register("description", {
+              required: "Description is required",
+            })}
             id="description"
             placeholder="Tell us about your artwork..."
             rows={5}
             className="border-border focus:ring-2 focus:ring-myPurple focus:border-transparent text-myGray"
           />
+          {errors?.description?.message && (
+            <ErrorText>{errors.description.message}</ErrorText>
+          )}
         </div>
 
         {/* Category */}
         <div className="space-y-3">
           <Label className="text-myGray-midum font-medium">Category</Label>
           <select
-            {...register("category")}
+            {...register("category", { required: "Category is required" })}
             className="border border-border bg-primary text-myGray rounded-md px-3 py-2 focus:ring-2 focus:ring-myPurple/20 focus:outline-none transition-colors appearance-none pr-7 bg-[length:16px_16px] bg-[right_8px_center] bg-no-repeat w-full"
             style={{
               backgroundImage:
@@ -297,7 +210,15 @@ export default function CreatePost() {
               </div>
             ))}
           </div>
-          <input type="hidden" {...register("tags")} />
+          <input
+            type="hidden"
+            {...register("tags", {
+              required: "At least one tag is required",
+            })}
+          />
+          {errors?.tags?.message && (
+            <ErrorText>{errors.tags.message}</ErrorText>
+          )}
         </div>
 
         <div className="pt-6">
@@ -310,13 +231,6 @@ export default function CreatePost() {
           </Button>
         </div>
       </form>
-
-      {/* Success notification */}
-      {isSuccess && (
-        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg animate-fade-in">
-          Artwork published successfully!
-        </div>
-      )}
     </div>
   );
 }

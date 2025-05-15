@@ -30,7 +30,6 @@ function Gallery({ text, numImg, from }) {
   // }));
 
   const { isLoading, posts } = usePosts();
-  console.log(posts);
 
   if (isLoading) return <Spinner />;
 
