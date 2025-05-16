@@ -14,46 +14,33 @@ import { toast } from "react-toastify";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import ErrorText from "@/ui/ErrorText";
 
 export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, formState } = useForm();
   const { mutate: signUpWithEmail, isPending } = useSignUp();
   const { setUser } = useAuthContext();
 
-  function onSubmit(data) {
-    signUpWithEmail(data, {
-      onSuccess: (data) => {
-        setUser(data?.user);
-        toast.success("Signed up successfully!", { position: "top-center" });
-        reset();
-      },
-      onError: (error) => {
-        toast.error(error.message, { position: "top-center" });
-      },
-    });
-  }
+  const { errors } = formState;
 
-  // const handleGoogleSignUp = () => {
-  //   signUpWithGoogle(undefined, {
-  //     onSuccess: (data) => {
-  //       const user = {
-  //         id: data.user.id,
-  //         email: data.user.email,
-  //         user_metadata: {
-  //           full_name: data.user.user_metadata?.full_name || "",
-  //           avatar_url: data.user.user_metadata?.avatar_url || "",
-  //         },
-  //       };
-  //       setUser(user);
-  //       toast.success("Google sign up successful!", { position: "top-center" });
-  //       onOpenChange(false);
-  //     },
-  //     onError: (error) => {
-  //       toast.error(error.message, { position: "top-center" });
-  //     },
-  //   });
-  // };
+  function onSubmit(data) {
+    const image = typeof data.image === "string" ? data.image : data.image[0];
+
+    signUpWithEmail(
+      { ...data, image: image },
+      {
+        onSuccess: (data) => {
+          setUser(data?.user);
+          toast.success("Signed up successfully!", { position: "top-center" });
+          reset();
+        },
+        onError: (error) => {
+          toast.error(error.message, { position: "top-center" });
+        },
+      }
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -67,20 +54,41 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
           </DialogDescription>
         </DialogHeader>
 
-        {/* <div className="grid gap-4 py-4">
-          <Button
-            onClick={handleGoogleSignUp}
-            variant="outline"
-            className="w-full gap-2 hover:bg-myGray-dark cursor-pointer"
-            disabled={isLoading}
-          >
-            <GoogleIcon className="h-4 w-4" />
-            {isLoading ? "Signing up..." : "Sign up with Google"}
-          </Button>
-        </div> */}
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                {...register("fullName", { required: "Name is required" })}
+                id="name"
+                type="text"
+                placeholder="Enter your full name"
+                className={
+                  " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
+                }
+              />
+              {errors?.fullName?.message && (
+                <ErrorText>{errors.fullName.message}</ErrorText>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="profImg">Profile picture</Label>
+              <input
+                type="file"
+                name="profImg"
+                accept="image/*"
+                {...register("image", {
+                  required: "This field is required",
+                })}
+                className="file:bg-myPurple file:text-white file:border-none file:px-4 file:py-2 file:rounded file:cursor-pointer
+             bg-color-card text-myGray border border-border focus:ring-2 focus:ring-myPurple"
+              />
+              {errors?.image?.message && (
+                <ErrorText>{errors.image.message}</ErrorText>
+              )}
+            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -92,6 +100,9 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
                   " border-myPurple focus-visible:ring-myPurple focus-visible:border-myPurple selection:bg-myPurple text-white"
                 }
               />
+              {errors?.email?.message && (
+                <ErrorText>{errors.email.message}</ErrorText>
+              )}
             </div>
             <div className="grid gap-2 relative">
               <Label htmlFor="password">Password</Label>
@@ -107,6 +118,9 @@ export default function SignUp({ open, onOpenChange, onSwitchToSignIn }) {
                 }
                 placeholder="Enter your password"
               />
+              {errors?.password?.message && (
+                <ErrorText>{errors.password.message}</ErrorText>
+              )}
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}

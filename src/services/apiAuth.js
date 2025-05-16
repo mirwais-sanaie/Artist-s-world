@@ -1,14 +1,38 @@
+/* eslint-disable no-unused-vars */
 import { useMutation } from "@tanstack/react-query";
 import supabase from "./supabase";
 
 export async function signUp(user) {
-  const { email, password } = user;
+  const { email, password, fullName, image } = user;
+
+  //1 create a unique name for the image
+  const imageName = `${crypto.randomUUID()}-${image.name}`.replaceAll("/", "");
+
+  // 2. Upload the image to Supabase Storage
+  const { data: uploadImg, error: uploadErr } = await supabase.storage
+    .from("avatars")
+    .upload(`user-avatars/${imageName}`, image);
+
+  if (uploadErr) {
+    throw new Error(`Image upload failed: ${uploadErr.message}`);
+  }
+
+  // 3. Get the public URL of the uploaded image
+  const { data: publicUrlData } = supabase.storage
+    .from("avatars")
+    .getPublicUrl(`user-avatars/${imageName}`);
+
+  const avatarUrl = publicUrlData.publicUrl;
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    // options: {
-    //   data: { avatar: "" },
-    // },
+    options: {
+      data: {
+        full_name: fullName,
+        avatar_url: avatarUrl,
+      },
+    },
   });
   if (error) throw new Error(error.message);
   return data;
@@ -45,53 +69,3 @@ export function useSignIn() {
     onError: (error) => console.error("Sign in error:", error.message),
   });
 }
-
-// Google Auth Functions
-// Google Sign In (popup)
-// export async function signInWithGoogle() {
-//   return new Promise((resolve, reject) => {
-//     const { data, error } = supabase.auth.signInWithOAuth({
-//       provider: "google",
-//       options: {
-//         queryParams: { prompt: "select_account" },
-//         flow: "popup",
-//       },
-//     });
-
-//     if (error) return reject(error);
-
-//     const { subscription } = supabase.auth.onAuthStateChange(
-//       (event, session) => {
-//         if (event === "SIGNED_IN" && session?.user) {
-//           toast.success("Google sign in successful!", {
-//             position: "top-center",
-//           });
-//           subscription.unsubscribe();
-//           resolve(session);
-//         }
-//       }
-//     );
-//   });
-// }
-
-// export async function signUpWithGoogle() {
-//   return signInWithGoogle();
-// }
-
-// export function useSignInWithGoogle() {
-//   return useMutation({
-//     mutationFn: signInWithGoogle,
-//     onError: (err) => {
-//       toast.error(err.message, { position: "top-center" });
-//     },
-//   });
-// }
-
-// export function useSignUpWithGoogle() {
-//   return useMutation({
-//     mutationFn: signUpWithGoogle,
-//     onError: (err) => {
-//       toast.error(err.message, { position: "top-center" });
-//     },
-//   });
-// }

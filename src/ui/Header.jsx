@@ -31,9 +31,15 @@ import { signOut } from "@/services/apiAuth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { openModal, setOpenModal, isLogoutOpen, setIsLogoutOpen, setUser } =
-    useAuthContext();
-  const { user } = useAuthContext();
+  const {
+    openModal,
+    setOpenModal,
+    isLogoutOpen,
+    setIsLogoutOpen,
+    setUser,
+    user,
+  } = useAuthContext();
+  console.log(user);
 
   const navLinks = [
     { name: "Home", href: "/category/characterDesign" },
@@ -61,6 +67,7 @@ export default function Header() {
     setUser(null);
     setIsLogoutOpen(false);
   }
+
   return (
     <header
       className={`sticky top-0 z-50 w-full supports-[backdrop-filter]:bg-[#101014] pt-2`}
@@ -108,14 +115,12 @@ export default function Header() {
                   <ArrowUpFromLine className="!w-6 !h-6" />
                 </Link>
 
-                <div>
+                <div className="w-[35px] h-[35px]">
                   <img
-                    className="rounded-full border-2 border-myGray-muted hover:border-myPurple cursor-pointer"
-                    src="https://www.gravatar.com/avatar/0c4f50181f487eb9824604d450bc6196.jpg?size=240&amp;d=https%3A%2F%2Fwww.artstation.com%2Fassets%2Fdefault_avatar.jpg"
-                    alt=""
-                    width="33"
-                    height="33"
-                  ></img>
+                    className="w-full h-full rounded-full object-cover border-2 border-myGray-muted hover:border-myPurple"
+                    src={user?.user_metadata?.avatar_url}
+                    alt="User Avatar"
+                  />
                 </div>
 
                 <Button

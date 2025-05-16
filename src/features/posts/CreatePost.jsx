@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import ErrorText from "@/ui/ErrorText";
 import { useCreatePost } from "./useCreatePost";
 import { useEditPost } from "./useEditPost";
+import { useAuthContext } from "@/contexts/AuthContextProv";
 
 const categories = [
   "Character Design",
@@ -19,12 +20,15 @@ const categories = [
 ];
 
 export default function CreatePost({ postToEdit = {}, onCloseModal }) {
+  const { user } = useAuthContext();
+  const userID = user?.id ? user.id : null;
   const { isEditing, editPost } = useEditPost();
   const { isLoading, createPost } = useCreatePost();
   const isWorking = isLoading || isEditing;
   const { id: editId, ...editValues } = postToEdit;
   const isEditSession = Boolean(editId);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  console.log(user);
 
   // const { user } = useAuthContext();
   const { register, handleSubmit, setValue, reset, formState } = useForm({
@@ -40,11 +44,16 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
 
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
+    const userFullName = user?.user_metadata?.full_name;
+    const userAvatar = user?.user_metadata?.avatar_url;
 
     if (isEditSession) {
       setIsSubmitting(true);
       editPost(
-        { newCabinData: { ...data, image }, id: editId },
+        {
+          newCabinData: { ...data, image, userFullName, userAvatar },
+          id: editId,
+        },
         {
           onSuccess: (data) => {
             reset();
@@ -56,7 +65,7 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
     } else {
       setIsSubmitting(true);
       createPost(
-        { ...data, image: image },
+        { ...data, image: image, user_id: userID, userFullName, userAvatar },
         {
           onSuccess: (data) => {
             reset();
