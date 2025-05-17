@@ -30,7 +30,7 @@ function MobileNavHeader() {
       </div>
 
       {user?.aud === "authenticated" ? (
-        <div className="flex space-x-2 items-center justify-end">
+        <div className="flex space-x-4 items-center justify-end">
           <Link
             to={"/createpost"}
             variant="ghost"
@@ -41,14 +41,12 @@ function MobileNavHeader() {
             <ArrowUpFromLine className="!w-6 !h-6" />
           </Link>
 
-          <div>
+          <div className="w-[35px] h-[35px]">
             <img
-              className="rounded-full border-2 border-myGray-muted hover:border-myPurple cursor-pointer"
-              src="https://www.gravatar.com/avatar/0c4f50181f487eb9824604d450bc6196.jpg?size=240&amp;d=https%3A%2F%2Fwww.artstation.com%2Fassets%2Fdefault_avatar.jpg"
-              alt=""
-              width="33"
-              height="33"
-            ></img>
+              className="w-full h-full rounded-full object-cover border-2 border-myGray-muted hover:border-myPurple"
+              src={user?.user_metadata?.avatar_url}
+              alt="User Avatar"
+            />
           </div>
         </div>
       ) : (

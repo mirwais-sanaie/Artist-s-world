@@ -14,10 +14,19 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
+import { signOut } from "@/services/apiAuth";
 
-export default function MobileSidebar({ navLinks }) {
+export default function MobileSidebar({ navLinks, setIsMenuOpen }) {
   const { setOpenModal, user } = useAuthContext();
   const [openJobsDropdown, setOpenJobsDropdown] = useState(false);
+
+  const { setUser } = useAuthContext();
+
+  function handleLogOut() {
+    signOut();
+    setUser(null);
+    setIsMenuOpen(false);
+  }
 
   return (
     <SheetContent
@@ -69,9 +78,14 @@ export default function MobileSidebar({ navLinks }) {
           </div>
 
           {user?.aud === "authenticated" ? (
-            // <LogOut />
-            <Button className="text-white">Hello</Button>
+            <Button
+              onClick={() => handleLogOut()}
+              className="bg-myPurple hover:bg-myPurple-hover text-white cursor-pointer"
+            >
+              Log out
+            </Button>
           ) : (
+            // <Button className="text-white">Hello</Button>
             <Button
               onClick={() => setOpenModal("signup")}
               className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"

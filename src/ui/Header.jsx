@@ -39,7 +39,6 @@ export default function Header() {
     setUser,
     user,
   } = useAuthContext();
-  console.log(user);
 
   const navLinks = [
     { name: "Home", href: "/category/characterDesign" },
