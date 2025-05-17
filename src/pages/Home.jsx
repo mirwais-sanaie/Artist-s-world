@@ -9,7 +9,7 @@ function Home() {
   const { openSignUp, openSignIn } = useAuthContext();
   const location = useLocation();
   const params = useParams();
-
+ 
   const HIDE_SLIDERS_BASE_PATHS = ["/category/characterDesign", "/other-path"];
 
   const shouldHideSliders = HIDE_SLIDERS_BASE_PATHS.some(

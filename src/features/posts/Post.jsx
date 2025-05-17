@@ -1,13 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Heart,
-  MessageSquare,
-  Share2,
-  Bookmark,
-  MoreHorizontal,
-} from "lucide-react";
 
 export default function Post() {
   const { state } = useLocation();
@@ -23,57 +15,35 @@ export default function Post() {
         <div className="lg:w-4/5">
           <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl">
             <img
-              src={post.src}
+              src={post.image}
               alt={post.title}
               className="w-full h-auto object-contain max-h-[80vh] mx-auto"
             />
-          </div>
-
-          {/* Artwork actions */}
-          <div className="flex justify-between items-center mt-4">
-            <div className="flex gap-4">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Heart className="w-4 h-4" />
-                <span>{post.likes} Likes</span>
-              </Button>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <MessageSquare className="w-4 h-4" />
-                <span>Comment</span>
-              </Button>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Share2 className="w-4 h-4" />
-                <span>Share</span>
-              </Button>
-            </div>
-            <div>
-              <Button variant="ghost" size="sm">
-                <Bookmark className="w-4 h-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <MoreHorizontal className="w-4 h-4" />
-              </Button>
-            </div>
           </div>
         </div>
 
         <div className="lg:w-1/5 space-y-6">
           {/* Artist info */}
           <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={post.avatar} />
-              <AvatarFallback>{post.artist.charAt(0)}</AvatarFallback>
-            </Avatar>
+            <div className="h-12 w-12 rounded-full border-2 border-myPurple shadow-md overflow-hidden">
+              <img
+                src={post.userAvatar}
+                alt={post.artist}
+                className="h-full w-full object-cover"
+              />
+            </div>
             <div>
-              <h3 className="font-semibold text-white">{post.artist}</h3>
-              <p className="text-sm text-gray-400">
-                {Math.floor(Math.random() * 10000)} followers
-              </p>
+              <h3 className="font-semibold text-white">{post.userFullName}</h3>
+              <p className="text-sm text-gray-400">Author</p>
             </div>
           </div>
 
           {/* Follow button */}
-          <Button variant="outline" className="w-full">
-            Follow
+          <Button
+            variant="outline"
+            className="w-full bg-primary hover:bg-myPurple duration-300 text-white cursor-pointer"
+          >
+            Add to favorites
           </Button>
 
           <div className="space-y-4">
@@ -94,23 +64,8 @@ export default function Post() {
               ))}
             </div>
 
-            <div className="grid grid-cols-3 gap-4 text-center text-sm">
-              <div>
-                <p className="text-gray-400">Views</p>
-                <p className="font-medium text-white">{post.views}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Appreciations</p>
-                <p className="font-medium text-white">{post.likes}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Comments</p>
-                <p className="font-medium text-white">{post.comments}</p>
-              </div>
-            </div>
-
             <p className="text-xs text-gray-500">
-              Published: {new Date(post.publishedAt).toLocaleDateString()}
+              Published: {new Date(post.created_at).toISOString().split("T")[0]}
             </p>
           </div>
         </div>
