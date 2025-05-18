@@ -14,34 +14,34 @@ const CarouselSlider = () => {
       title: "Cyberpunk Cityscape",
       description:
         "A futuristic neon-lit city blending dystopia with digital dreams.",
-      imageUrl: "./3d.png",
+      imageUrl: "/3d.png",
     },
     {
       id: 2,
       title: "Ancient Mech Warrior",
       description: "A colossal mech buried in the sands of time.",
-      imageUrl: "./3d_2.png",
+      imageUrl: "/3d_2.png",
     },
     {
       id: 3,
       title: "Floating Island Temple",
       description:
         "A peaceful shrine resting atop a floating island, defying gravity.",
-      imageUrl: "./3d_5.png",
+      imageUrl: "/3d_5.png",
     },
     {
       id: 4,
       title: "Alien Biolab",
       description:
         "A mysterious alien lab filled with glowing flora and eerie silence.",
-      imageUrl: "./3d_4.png",
+      imageUrl: "/3d_4.png",
     },
     {
       id: 5,
       title: "Digital Dreamscape",
       description:
         "A surreal 3D landscape where imagination meets rendering power.",
-      imageUrl: "./3d_3.png",
+      imageUrl: "/3d_3.png",
     },
   ];
 
