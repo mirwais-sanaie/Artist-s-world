@@ -11,12 +11,11 @@ function CategorySlider() {
   const categories = [
     { id: 1, name: "Character Design", image: "🎨", link: "characterDesign" },
     { id: 2, name: "3d Substance", image: "🏞️", link: "substance" },
-    { id: 3, name: "Game AI", image: "✏️", link: "gameAI" },
-    { id: 4, name: "Illustration", image: "🖥️", link: "illustration" },
-    { id: 5, name: "Story board", image: "🖌️", link: "storyboard" },
-    { id: 6, name: "Concept idea", image: "🖼️", link: "conceptidea" },
-    { id: 7, name: "Environment", image: "📱", link: "environment" },
-    { id: 8, name: "Digital pictures", image: "😐", link: "digitalpictures" },
+    { id: 3, name: "Illustration", image: "🖥️", link: "illustration" },
+    { id: 4, name: "Story board", image: "🖌️", link: "storyboard" },
+    { id: 5, name: "Concept idea", image: "🖼️", link: "conceptidea" },
+    { id: 6, name: "Environment", image: "📱", link: "environment" },
+    { id: 7, name: "Digital pictures", image: "😐", link: "digitalpictures" },
   ];
 
   return (

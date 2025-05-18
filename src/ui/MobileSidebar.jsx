@@ -85,7 +85,6 @@ export default function MobileSidebar({ navLinks, setIsMenuOpen }) {
               Log out
             </Button>
           ) : (
-            // <Button className="text-white">Hello</Button>
             <Button
               onClick={() => setOpenModal("signup")}
               className="text-white bg-myGray-dark border-[#1E1E24] hover:bg-myGray-muted hover:text-white"

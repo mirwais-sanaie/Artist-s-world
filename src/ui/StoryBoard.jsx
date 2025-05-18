@@ -2,23 +2,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { usePosts } from "@/features/posts/usePosts";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Link } from "react-router-dom";
-import Spinner from "./Spinner";
 
-function CharacterDesign() {
-  const { posts, isLoading, isError } = usePosts();
+function Storyboard() {
+  const { posts } = usePosts();
 
-  if (isLoading) return <Spinner />;
-  if (isError || !posts) return <div>Something went wrong loading posts.</div>;
-
-  const characterDesign = posts.filter(
-    (post) => post.category === "Character Design"
-  );
-
+  const storyboard = posts.filter((post) => post.category === "Story board");
   return (
     <div className="py-8">
-      <h1 className="font-bold text-3xl md:text-4xl mb-6">Character Design</h1>
+      <h1 className="font-bold text-3xl md:text-4xl mb-6">Story board</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-1">
-        {characterDesign.map((post) => (
+        {storyboard.map((post) => (
           <Link
             key={post.id}
             to={`/category/characterDesign/${post.id}`}
@@ -57,4 +50,4 @@ function CharacterDesign() {
   );
 }
 
-export default CharacterDesign;
+export default Storyboard;

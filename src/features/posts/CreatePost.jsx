@@ -13,10 +13,11 @@ import { useAuthContext } from "@/contexts/AuthContextProv";
 const categories = [
   "Character Design",
   "Environment Art",
-  "Concept Art",
+  "Concept Idea",
   "Illustration",
-  "3D Modeling",
-  "Digital Painting",
+  "Story board",
+  "Digital pictures",
+  "3D Substance",
 ];
 
 export default function CreatePost({ postToEdit = {}, onCloseModal }) {
