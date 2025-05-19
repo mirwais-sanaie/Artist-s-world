@@ -60,6 +60,7 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
             reset();
             setTags([]);
             setTagInput("");
+            setIsSubmitting(false);
           },
         }
       );
@@ -72,6 +73,7 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
             reset();
             setTags([]);
             setTagInput("");
+            setIsSubmitting(false);
           },
         }
       );

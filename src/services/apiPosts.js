@@ -59,3 +59,14 @@ export async function createEditPost(newPost, id) {
 
   return data;
 }
+
+export async function deletePostApi(id) {
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+
+  if (error) {
+    toast.error("Error deleting post: " + error.message, {
+      position: "top-center",
+    });
+    throw error;
+  }
+}

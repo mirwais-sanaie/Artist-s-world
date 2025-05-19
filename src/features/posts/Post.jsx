@@ -1,9 +1,22 @@
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Heart, Trash2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@radix-ui/react-dialog";
+import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import { useState } from "react";
+import { useDeletePost } from "./useDeletePost";
 
 export default function Post() {
   const { state } = useLocation();
   const post = state?.post;
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const { isDeleting, deletePost } = useDeletePost();
 
   if (!post) {
     return <div>Loading...</div>;
@@ -38,14 +51,6 @@ export default function Post() {
             </div>
           </div>
 
-          {/* Follow button */}
-          <Button
-            variant="outline"
-            className="w-full bg-primary hover:bg-myPurple duration-300 text-white cursor-pointer"
-          >
-            Add to favorites
-          </Button>
-
           <div className="space-y-4">
             <div>
               <h2 className="text-xl font-bold text-white">{post.title}</h2>
@@ -68,7 +73,57 @@ export default function Post() {
               Published: {new Date(post.created_at).toISOString().split("T")[0]}
             </p>
           </div>
+
+          {/* Action button */}
+          <div className="flex">
+            <Button
+              variant="outline"
+              className="bg-primary group hover:bg-white duration-300 text-white cursor-pointer"
+            >
+              <Heart className="h-4 w-4 text-white group-hover:text-black" />
+            </Button>
+
+            <Button
+              onClick={() => setIsDeleteOpen(true)}
+              variant="outline"
+              className="bg-primary group hover:bg-red-500 duration-300 text-white cursor-pointer ml-2"
+            >
+              <Trash2 className="h-4 w-4 text-red-500 group-hover:text-white" />
+            </Button>
+          </div>
         </div>
+
+        <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+          <DialogContent className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="w-full max-w-md rounded-lg bg-primary p-6 text-white shadow-lg">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold">
+                  Confirm Deleting
+                </DialogTitle>
+                <DialogDescription className="text-gray-400">
+                  Are you sure you want to delete this post?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-4 flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsDeleteOpen(false)}
+                  disabled={isDeleting}
+                  className="text-white border-gray-600 hover:bg-gray-700"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => deletePost(post.id)}
+                  disabled={isDeleting}
+                  className="bg-red-500 hover:bg-red-600 text-white"
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </Button>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
