@@ -10,17 +10,27 @@ import {
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useDeletePost } from "./useDeletePost";
+import { useAuthContext } from "@/contexts/AuthContextProv";
+import { useNavigate } from "react-router-dom";
 
 export default function Post() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const post = state?.post;
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const { isDeleting, deletePost } = useDeletePost();
+  const { deletePost, isDeleting } = useDeletePost();
+  const { user } = useAuthContext();
 
-  if (!post) {
-    return <div>Loading...</div>;
-  }
+  if (!post) return <div>Loading...</div>;
+
+  const handleDelete = () => {
+    deletePost(post.id, {
+      onSuccess: () => {
+        navigate(`/category/characterDesign`);
+      },
+    });
+  };
 
   return (
     <div className=" mx-auto px-4 py-2">
@@ -83,13 +93,15 @@ export default function Post() {
               <Heart className="h-4 w-4 text-white group-hover:text-black" />
             </Button>
 
-            <Button
-              onClick={() => setIsDeleteOpen(true)}
-              variant="outline"
-              className="bg-primary group hover:bg-red-500 duration-300 text-white cursor-pointer ml-2"
-            >
-              <Trash2 className="h-4 w-4 text-red-500 group-hover:text-white" />
-            </Button>
+            {user?.id === post.user_id && (
+              <Button
+                onClick={() => setIsDeleteOpen(true)}
+                variant="outline"
+                className="bg-primary group hover:bg-red-500 duration-300 text-white cursor-pointer ml-2"
+              >
+                <Trash2 className="h-4 w-4 text-red-500 group-hover:text-white" />
+              </Button>
+            )}
           </div>
         </div>
 
@@ -114,9 +126,9 @@ export default function Post() {
                   Cancel
                 </Button>
                 <Button
-                  onClick={() => deletePost(post.id)}
+                  onClick={handleDelete}
                   disabled={isDeleting}
-                  className="bg-red-500 hover:bg-red-600 text-white"
+                  className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
                 </Button>

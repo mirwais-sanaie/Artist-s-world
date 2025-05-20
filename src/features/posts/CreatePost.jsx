@@ -9,6 +9,7 @@ import ErrorText from "@/ui/ErrorText";
 import { useCreatePost } from "./useCreatePost";
 import { useEditPost } from "./useEditPost";
 import { useAuthContext } from "@/contexts/AuthContextProv";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   "Character Design",
@@ -25,10 +26,11 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
   const userID = user?.id ? user.id : null;
   const { isEditing, editPost } = useEditPost();
   const { isLoading, createPost } = useCreatePost();
-  const isWorking = isLoading || isEditing;
   const { id: editId, ...editValues } = postToEdit;
   const isEditSession = Boolean(editId);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
   console.log(user);
 
   // const { user } = useAuthContext();
@@ -61,6 +63,7 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
             setTags([]);
             setTagInput("");
             setIsSubmitting(false);
+            navigate(`/category/characterDesign`);
           },
         }
       );
@@ -74,6 +77,7 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
             setTags([]);
             setTagInput("");
             setIsSubmitting(false);
+            navigate(`/category/characterDesign`);
           },
         }
       );
