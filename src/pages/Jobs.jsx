@@ -1,9 +1,7 @@
+import { Outlet } from "react-router-dom";
+
 function jobs() {
-  return (
-    <div>
-      <h1>Jobs</h1>
-    </div>
-  );
+  return <Outlet />;
 }
 
 export default jobs;

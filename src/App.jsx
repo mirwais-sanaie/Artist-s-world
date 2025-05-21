@@ -17,6 +17,8 @@ import Illustration from "./ui/Illustration";
 import Storyboard from "./ui/StoryBoard";
 import ConceptIdea from "./ui/ConceptIdea";
 import DigitalPictures from "./ui/DigitalPictures";
+import PostJobs from "./features/jobs/PostJobs";
+import FindJobs from "./features/jobs/FindJobs";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,8 +53,13 @@ function App() {
                   element={<Post />}
                 />
               </Route>
+
               <Route path="companies" element={<Companies />} />
-              <Route path="jobs" element={<Jobs />} />
+              <Route path="jobs" element={<Jobs />}>
+                <Route path="postJobs" element={<PostJobs />} />
+                <Route path="findJobs" element={<FindJobs />} />
+              </Route>
+
               <Route path="cart" element={<Cart />} />
               <Route path="user" element={<User />} />
               <Route path="createpost" element={<CreatePost />} />

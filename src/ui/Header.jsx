@@ -49,12 +49,12 @@ export default function Header() {
       children: [
         {
           name: "Post Job",
-          href: "/Jobs/post",
+          href: "/jobs/postJobs",
           icon: <FileText className="w-4 h-4 mr-2" />,
         },
         {
           name: "Find Job",
-          href: "/Jobs/find",
+          href: "/jobs/findJobs",
           icon: <BriefcaseBusiness className="w-4 h-4 mr-2" />,
         },
       ],
