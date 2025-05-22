@@ -1,17 +1,18 @@
 import supabase from "./supabase";
 
-export function createJob(jobData) {
-  const { data, error } = supabase.from("jobs").insert(jobData);
+export async function createJob(jobData) {
+  console.log("Job data:", jobData);
+  const { error } = await supabase.from("jobs").insert([jobData]);
 
   if (error) {
-    throw new Error("Error creating job: " + error.message);
+    console.log("Error inserting job:", error);
   }
 
-  return data;
+  return null;
 }
 
-export function getJobs() {
-  const { data, error } = supabase.from("jobs").select("*");
+export async function getJobs() {
+  const { data, error } = await supabase.from("jobs").select("*");
 
   if (error) {
     throw new Error("Error fetching jobs: " + error.message);

@@ -1,24 +1,18 @@
-const FindJobs = () => {
-  const jobs = [
-    {
-      id: 1,
-      title: "3D Character Artist",
-      description:
-        "Looking for a talented 3D character artist to create high-quality models for our upcoming game. Experience with ZBrush and Blender is a plus.",
-    },
-    {
-      id: 2,
-      title: "Concept Artist",
-      description:
-        "Seeking a skilled concept artist to design characters and environments for our new project. Strong portfolio required.",
-    },
-    {
-      id: 3,
-      title: "Game Designer",
-      description:
-        "We are looking for a game designer with experience in level design and gameplay mechanics. Must be familiar with Unity or Unreal Engine.",
-    },
-  ];
+import Spinner from "@/ui/Spinner";
+import { useJobs } from "./useJobs";
+
+function FindJobs() {
+  const { jobs, error, isLoading } = useJobs();
+  if (isLoading) {
+    return <Spinner />;
+  }
+  if (error) {
+    return (
+      <div className="bg-red-500 text-white p-4 rounded-lg">
+        <p>Error fetching jobs: {error.message}</p>
+      </div>
+    );
+  }
   return (
     <div className="bg-primary dark:bg-zinc-900 p-6 rounded-2xl shadow-lg w-full max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-center text-white">
@@ -53,6 +47,6 @@ const FindJobs = () => {
       )}
     </div>
   );
-};
+}
 
 export default FindJobs;
