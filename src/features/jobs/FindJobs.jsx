@@ -30,7 +30,7 @@ function FindJobs() {
               key={job.id}
               className="border border-myPurple/20 rounded-xl p-5 bg-color-card"
             >
-              <h3 className="text-2xl font-semibold text-white mb-2">
+              <h3 className="text-2xl font-semibold  text-white mb-2">
                 {job.title}
               </h3>
               <p className="text-white dark:text-gray-300 text-sm leading-relaxed line-clamp-4">
@@ -50,3 +50,5 @@ function FindJobs() {
 }
 
 export default FindJobs;
+
+//react js , tailwind css , shadcn/ui,

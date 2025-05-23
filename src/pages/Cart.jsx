@@ -1,7 +1,11 @@
+import FakeCartPost from "@/features/cart/FakeCartPost";
+
 function Cart() {
   return (
     <div>
-      <h1>Cart</h1>
+      <FakeCartPost />
+      <FakeCartPost />
+      <FakeCartPost />
     </div>
   );
 }
