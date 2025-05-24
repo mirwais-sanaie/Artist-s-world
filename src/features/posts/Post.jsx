@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@radix-ui/react-dialog";
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDeletePost } from "./useDeletePost";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,18 @@ export default function Post() {
   const { deletePost, isDeleting } = useDeletePost();
   const { user } = useAuthContext();
 
-  if (!post) return <div>Loading...</div>;
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    if (!post) return;
+    const savedPosts = JSON.parse(localStorage.getItem("savedPosts") || "[]");
+    const alreadySaved = savedPosts.some((p) => p.id === post.id);
+    setIsSaved(alreadySaved);
+  }, [post]);
+
+  if (!post) {
+    return <div>Loading...</div>;
+  }
 
   const handleDelete = () => {
     deletePost(post.id, {
@@ -30,6 +41,22 @@ export default function Post() {
         navigate(`/category/characterDesign`);
       },
     });
+  };
+
+  const handleSaveToLocalStorage = () => {
+    const savedPosts = JSON.parse(localStorage.getItem("savedPosts") || "[]");
+    let updatedPosts;
+
+    if (isSaved) {
+      // Remove post if already saved
+      updatedPosts = savedPosts.filter((p) => p.id !== post.id);
+    } else {
+      // Add post to saved list
+      updatedPosts = [...savedPosts, post];
+    }
+
+    localStorage.setItem("savedPosts", JSON.stringify(updatedPosts));
+    setIsSaved(!isSaved);
   };
 
   return (
@@ -86,11 +113,23 @@ export default function Post() {
 
           {/* Action button */}
           <div className="flex">
-            <Button
+            {/* <Button
               variant="outline"
               className="bg-primary group hover:bg-white duration-300 text-white cursor-pointer"
             >
               <Heart className="h-4 w-4 text-white group-hover:text-black" />
+            </Button> */}
+
+            <Button
+              variant="outline"
+              onClick={handleSaveToLocalStorage}
+              className="bg-primary group hover:bg-white duration-300 text-white cursor-pointer"
+            >
+              <Heart
+                className={`h-4 w-4 ${
+                  isSaved ? "text-red-500" : "text-white"
+                } group-hover:text-black`}
+              />
             </Button>
 
             {user?.id === post.user_id && (

@@ -1,45 +1,59 @@
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 export default function FakeCartPost() {
-  const fakePost = {
-    id: "1",
-    title: "Fantasy Warrior",
-    description: "A powerful warrior in a magical realm.",
-    image: "https://picsum.photos/seed/art1/300/200",
-    userFullName: "Jane Doe",
-    userAvatar: "https://picsum.photos/seed/avatar1/100",
-    tags: ["Fantasy", "Warrior", "Digital"],
-    created_at: new Date().toISOString(),
-  };
+  const [savedPosts, setSavedPosts] = useState([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("savedPosts") || "[]");
+
+    const uniquePosts = stored.filter(
+      (post, index, self) => index === self.findIndex((p) => p.id === post.id)
+    );
+
+    setSavedPosts(uniquePosts);
+  }, []);
 
   return (
-    <div className="flex items-center gap-4 p-4 border border-gray-700 rounded-lg bg-gray-900 shadow-md">
-      <img
-        src={fakePost.image}
-        alt={fakePost.title}
-        className="w-32 h-20 object-cover rounded-md"
-      />
-      <div className="flex-1 space-y-1">
-        <h2 className="text-white font-semibold">{fakePost.title}</h2>
-        <p className="text-sm text-gray-400">{fakePost.description}</p>
-        <div className="flex items-center gap-2 mt-1">
-          <div className="h-6 w-6 rounded-full overflow-hidden border-2 border-myPurple">
-            <img
-              src={fakePost.userAvatar}
-              alt={fakePost.userFullName}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <span className="text-xs text-gray-300">{fakePost.userFullName}</span>
-        </div>
+    <div className="py-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-1">
+        {savedPosts.map((post) => (
+          <Link
+            key={post.id}
+            to={`/category/characterDesign/${post.id}`}
+            state={{ post: post }}
+          >
+            <Card className="group overflow-hidden border-none bg-transparent cursor-pointer p-0 m-0 rounded-sm">
+              <CardContent className="relative p-0 m-0 pb-[100%]">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 m-0">
+                  <div className="transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out">
+                    <div className="flex items-center gap-3 m-0 p-0">
+                      <Avatar className="h-12 w-12 border border-myaccent m-0 p-0">
+                        <AvatarImage src={post?.userAvatar} />
+                      </Avatar>
+                      <div className="m-0 p-0">
+                        <p className="text-white text-lg font-medium m-0 p-0">
+                          {post?.userFullName}
+                        </p>
+                        <p className="text-gray-400 text-sm m-0 p-0">
+                          {post.title}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
       </div>
-      <Button
-        variant="outline"
-        className="bg-red-600 hover:bg-red-700 text-white"
-      >
-        <Trash2 className="w-4 h-4" />
-      </Button>
     </div>
   );
 }

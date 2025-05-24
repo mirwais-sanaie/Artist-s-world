@@ -4,8 +4,6 @@ function Cart() {
   return (
     <div>
       <FakeCartPost />
-      <FakeCartPost />
-      <FakeCartPost />
     </div>
   );
 }
