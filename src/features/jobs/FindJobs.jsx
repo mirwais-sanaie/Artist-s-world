@@ -50,5 +50,3 @@ function FindJobs() {
 }
 
 export default FindJobs;
-
-//react js , tailwind css , shadcn/ui,

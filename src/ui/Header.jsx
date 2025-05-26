@@ -31,6 +31,7 @@ import { signOut } from "@/services/apiAuth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { savedPosts } = useAuthContext();
   const {
     openModal,
     setOpenModal,
@@ -97,7 +98,7 @@ export default function Header() {
             >
               <ShoppingCart className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 bg-myPurple text-white text-[10px] rounded-full h-4 min-w-[1.25rem] flex items-center justify-center px-[2px]">
-                3
+                {savedPosts?.length || 0}
               </span>
             </Link>
 

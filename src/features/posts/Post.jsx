@@ -20,16 +20,17 @@ export default function Post() {
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { deletePost, isDeleting } = useDeletePost();
-  const { user } = useAuthContext();
+
+  const { user, savedPosts, addToSavedPosts, removeFromSavedPosts } =
+    useAuthContext();
 
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     if (!post) return;
-    const savedPosts = JSON.parse(localStorage.getItem("savedPosts") || "[]");
     const alreadySaved = savedPosts.some((p) => p.id === post.id);
     setIsSaved(alreadySaved);
-  }, [post]);
+  }, [post, savedPosts]);
 
   if (!post) {
     return <div>Loading...</div>;
@@ -44,18 +45,14 @@ export default function Post() {
   };
 
   const handleSaveToLocalStorage = () => {
-    const savedPosts = JSON.parse(localStorage.getItem("savedPosts") || "[]");
-    let updatedPosts;
+    if (!post) return;
 
     if (isSaved) {
-      // Remove post if already saved
-      updatedPosts = savedPosts.filter((p) => p.id !== post.id);
+      removeFromSavedPosts(post.id);
     } else {
-      // Add post to saved list
-      updatedPosts = [...savedPosts, post];
+      addToSavedPosts(post);
     }
 
-    localStorage.setItem("savedPosts", JSON.stringify(updatedPosts));
     setIsSaved(!isSaved);
   };
 
@@ -123,13 +120,17 @@ export default function Post() {
             <Button
               variant="outline"
               onClick={handleSaveToLocalStorage}
-              className="bg-primary group hover:bg-white duration-300 text-white cursor-pointer"
+              className="bg-primary group hover:bg-white duration-300 text-white cursor-pointer hover:text-black"
             >
-              <Heart
-                className={`h-4 w-4 ${
-                  isSaved ? "text-red-500" : "text-white"
-                } group-hover:text-black`}
-              />
+              {isSaved ? (
+                "remove from favorites"
+              ) : (
+                <Heart
+                  className={`h-4 w-4 ${
+                    isSaved ? "text-red-500" : "text-white"
+                  } group-hover:text-black`}
+                />
+              )}
             </Button>
 
             {user?.id === post.user_id && (

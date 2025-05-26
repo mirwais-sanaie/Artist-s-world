@@ -9,6 +9,32 @@ function AuthContextProv({ children }) {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null); // optional, if you need full session data
 
+  //favorite posts functionality
+  const [savedPosts, setSavedPosts] = useState([]);
+
+  // Load localStorage
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("savedPosts") || "[]");
+    setSavedPosts(stored);
+  }, []);
+  // Whenever savedPosts changes, update localStorage
+  useEffect(() => {
+    localStorage.setItem("savedPosts", JSON.stringify(savedPosts));
+  }, [savedPosts]);
+
+  const addToSavedPosts = (post) => {
+    setSavedPosts((prev) => {
+      const exists = prev.find((p) => p.id === post.id);
+      if (exists) return prev;
+      return [...prev, post];
+    });
+  };
+
+  const removeFromSavedPosts = (postId) => {
+    setSavedPosts((prev) => prev.filter((post) => post.id !== postId));
+  };
+
+  // Initialize auth state and listen for changes
   useEffect(() => {
     const initAuth = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -39,7 +65,7 @@ function AuthContextProv({ children }) {
     });
 
     return () => {
-      subscription.unsubscribe(); // ✅ correct
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -53,6 +79,10 @@ function AuthContextProv({ children }) {
         user,
         setUser,
         session, // optional: use if needed
+        savedPosts,
+        setSavedPosts,
+        addToSavedPosts,
+        removeFromSavedPosts,
       }}
     >
       {children}

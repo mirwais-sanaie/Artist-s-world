@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { useAuthContext } from "@/contexts/AuthContextProv";
 
 export default function FakeCartPost() {
-  const [savedPosts, setSavedPosts] = useState([]);
+  const { savedPosts } = useAuthContext();
 
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("savedPosts") || "[]");
-
-    const uniquePosts = stored.filter(
-      (post, index, self) => index === self.findIndex((p) => p.id === post.id)
+  if (!savedPosts || savedPosts.length === 0) {
+    return (
+      <div className="py-8 text-center">
+        <p className="text-gray-500">No saved posts available.</p>
+      </div>
     );
-
-    setSavedPosts(uniquePosts);
-  }, []);
+  }
 
   return (
     <div className="py-8">
