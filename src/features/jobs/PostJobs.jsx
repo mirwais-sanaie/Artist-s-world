@@ -29,10 +29,6 @@ const PostJob = () => {
           toast.success("Job posted successfully!");
           setIsCreating((isCreating) => !isCreating);
         },
-        onError: (error) => {
-          toast.error("Error posting job: " + error.message);
-          setIsCreating((isCreating) => !isCreating);
-        },
       }
     );
     reset();

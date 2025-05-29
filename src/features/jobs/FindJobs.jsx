@@ -13,6 +13,7 @@ function FindJobs() {
       </div>
     );
   }
+  console.log(jobs);
   return (
     <div className="bg-primary dark:bg-zinc-900 p-6 rounded-2xl shadow-lg w-full max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-center text-white">
@@ -38,7 +39,7 @@ function FindJobs() {
               </p>
               <div className="text-right mt-4">
                 <span className="text-xs text-myGray-muted italic">
-                  Posted just now
+                  {new Date(job.created_at).toISOString().split("T")[0]}
                 </span>
               </div>
             </div>

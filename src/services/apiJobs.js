@@ -1,7 +1,6 @@
 import supabase from "./supabase";
 
 export async function createJob(jobData) {
-  console.log("Job data:", jobData);
   const { error } = await supabase.from("jobs").insert([jobData]);
 
   if (error) {
