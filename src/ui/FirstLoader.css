@@ -1,0 +1,54 @@
+.bigLoader {
+  -webkit-perspective: 700px;
+  perspective: 700px;
+  background: #9d4edd;
+  padding: 10px 20px;
+}
+
+.bigLoader > span {
+  font-size: 60px;
+  font-family: "franklin gothic medium", sans-serif;
+  display: inline-block;
+  animation: flip 2.6s infinite linear;
+  transform-origin: 0 70%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+@keyframes flip {
+  35% {
+    transform: rotatex(360deg);
+  }
+
+  100% {
+    transform: rotatex(360deg);
+  }
+}
+
+.bigLoader > span:nth-child(even) {
+  color: white;
+}
+
+.bigLoader > span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.bigLoader > span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.bigLoader > span:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+.bigLoader > span:nth-child(5) {
+  animation-delay: 1.2s;
+}
+
+.bigLoader > span:nth-child(6) {
+  animation-delay: 1.5s;
+}
+
+.bigLoader > span:nth-child(7) {
+  animation-delay: 1.8s;
+}

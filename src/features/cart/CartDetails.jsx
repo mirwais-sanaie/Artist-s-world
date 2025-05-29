@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 
-export default function FakeCartPost() {
+export default function CartDetails() {
   const { savedPosts } = useAuthContext();
 
   if (!savedPosts || savedPosts.length === 0) {

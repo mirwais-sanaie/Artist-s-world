@@ -1,9 +1,9 @@
-import FakeCartPost from "@/features/cart/FakeCartPost";
+import CartDetails from "@/features/cart/CartDetails";
 
 function Cart() {
   return (
     <div>
-      <FakeCartPost />
+      <CartDetails />
     </div>
   );
 }

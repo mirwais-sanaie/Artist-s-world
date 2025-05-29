@@ -1,38 +1,42 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AppLayout from "./ui/AppLayout";
-import Companies from "./pages/Companies";
-import Home from "./pages/Home";
-import Jobs from "./pages/Jobs";
-import Cart from "./pages/Cart";
-import User from "./pages/User";
-import CharacterDesign from "./ui/CharacterDesign";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthContextProv } from "./contexts/AuthContextProv";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Post from "./features/posts/Post";
-import CreatePost from "./features/posts/CreatePost";
-import EnvironmentArt from "./ui/EnvironmentArt";
-import Substance from "./ui/Substance";
-import Illustration from "./ui/Illustration";
-import Storyboard from "./ui/StoryBoard";
-import ConceptIdea from "./ui/ConceptIdea";
-import DigitalPictures from "./ui/DigitalPictures";
-import PostJobs from "./features/jobs/PostJobs";
-import FindJobs from "./features/jobs/FindJobs";
+import { lazy, Suspense } from "react";
+import Spinner from "./ui/Spinner";
+import FirstLoader from "./ui/FirstLoader";
+
+const AppLayout = lazy(() => import("./ui/AppLayout"));
+const Home = lazy(() => import("./pages/Home"));
+const CharacterDesign = lazy(() => import("./ui/CharacterDesign"));
+const Post = lazy(() => import("./features/posts/Post"));
+const CreatePost = lazy(() => import("./features/posts/CreatePost"));
+const EnvironmentArt = lazy(() => import("./ui/EnvironmentArt"));
+const Substance = lazy(() => import("./ui/Substance"));
+const Illustration = lazy(() => import("./ui/Illustration"));
+const Storyboard = lazy(() => import("./ui/StoryBoard"));
+const ConceptIdea = lazy(() => import("./ui/ConceptIdea"));
+const DigitalPictures = lazy(() => import("./ui/DigitalPictures"));
+const PostJobs = lazy(() => import("./features/jobs/PostJobs"));
+const FindJobs = lazy(() => import("./features/jobs/FindJobs"));
+const Companies = lazy(() => import("./pages/Companies"));
+const Jobs = lazy(() => import("./pages/Jobs"));
+const Cart = lazy(() => import("./pages/Cart"));
+const User = lazy(() => import("./pages/User"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    //staleTime: 1000 * 60 * 5, // 5 minutes
     staleTime: 0,
   },
 });
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProv>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <BrowserRouter>
+    <Suspense fallback={<FirstLoader />}>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProv>
+          <ReactQueryDevtools initialIsOpen={false} />
+
           <Routes>
             <Route element={<AppLayout />}>
               <Route
@@ -40,13 +44,62 @@ function App() {
                 element={<Navigate to="/category/characterDesign" replace />}
               />
               <Route path="category" element={<Home />}>
-                <Route path="characterDesign" element={<CharacterDesign />} />
-                <Route path="substance" element={<Substance />} />
-                <Route path="illustration" element={<Illustration />} />
-                <Route path="storyboard" element={<Storyboard />} />
-                <Route path="conceptidea" element={<ConceptIdea />} />
-                <Route path="environment" element={<EnvironmentArt />} />
-                <Route path="digitalpictures" element={<DigitalPictures />} />
+                <Route
+                  path="characterDesign"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <CharacterDesign />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="substance"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <Substance />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="illustration"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <Illustration />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="storyboard"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <Storyboard />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="conceptidea"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <ConceptIdea />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="environment"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <EnvironmentArt />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="digitalpictures"
+                  element={
+                    <Suspense fallback={<Spinner />}>
+                      <DigitalPictures />
+                    </Suspense>
+                  }
+                />
 
                 <Route
                   path="/category/characterDesign/:id"
@@ -65,9 +118,9 @@ function App() {
               <Route path="createpost" element={<CreatePost />} />
             </Route>
           </Routes>
-        </BrowserRouter>
-      </AuthContextProv>
-    </QueryClientProvider>
+        </AuthContextProv>
+      </QueryClientProvider>
+    </Suspense>
   );
 }
 
