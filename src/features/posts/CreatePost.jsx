@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import ErrorText from "@/ui/ErrorText";
 import { useCreatePost } from "./useCreatePost";
-import { useEditPost } from "./useEditPost";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 import { useNavigate } from "react-router-dom";
 
@@ -21,23 +20,14 @@ const categories = [
   "3D Substance",
 ];
 
-export default function CreatePost({ postToEdit = {}, onCloseModal }) {
+export default function CreatePost() {
   const { user } = useAuthContext();
   const userID = user?.id ? user.id : null;
-  const { isEditing, editPost } = useEditPost();
-  const { isLoading, createPost } = useCreatePost();
-  const { id: editId, ...editValues } = postToEdit;
-  const isEditSession = Boolean(editId);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isCreating, createPost } = useCreatePost();
   const navigate = useNavigate();
 
-  console.log(user);
-
-  // const { user } = useAuthContext();
   const { register, handleSubmit, setValue, reset, formState } = useForm({
-    defaultValues: isEditSession
-      ? editValues
-      : { tags: [], category: "Character Design" },
+    defaultValues: { tags: [], category: "Character Design" },
   });
   const { errors } = formState;
 
@@ -50,38 +40,17 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
     const userFullName = user?.user_metadata?.full_name;
     const userAvatar = user?.user_metadata?.avatar_url;
 
-    if (isEditSession) {
-      setIsSubmitting(true);
-      editPost(
-        {
-          newCabinData: { ...data, image, userFullName, userAvatar },
-          id: editId,
+    createPost(
+      { ...data, image: image, user_id: userID, userFullName, userAvatar },
+      {
+        onSuccess: (data) => {
+          reset();
+          setTags([]);
+          setTagInput("");
+          navigate(`/category/characterDesign`);
         },
-        {
-          onSuccess: (data) => {
-            reset();
-            setTags([]);
-            setTagInput("");
-            setIsSubmitting(false);
-            navigate(`/category/characterDesign`);
-          },
-        }
-      );
-    } else {
-      setIsSubmitting(true);
-      createPost(
-        { ...data, image: image, user_id: userID, userFullName, userAvatar },
-        {
-          onSuccess: (data) => {
-            reset();
-            setTags([]);
-            setTagInput("");
-            setIsSubmitting(false);
-            navigate(`/category/characterDesign`);
-          },
-        }
-      );
-    }
+      }
+    );
   }
 
   const onError = (errors) => {
@@ -117,7 +86,7 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
             type="file"
             accept="image/*"
             {...register("image", {
-              required: isEditSession ? false : "This field is required",
+              required: "This field is required",
             })}
             className="file:bg-myPurple file:text-white file:border-none file:px-4 file:py-2 file:rounded file:cursor-pointer
              bg-color-card text-myGray border border-border focus:ring-2 focus:ring-myPurple"
@@ -241,9 +210,9 @@ export default function CreatePost({ postToEdit = {}, onCloseModal }) {
           <Button
             type="submit"
             className="w-full bg-gradient-to-r from-myPurple to-myPurple-hover hover:from-myPurple-hover hover:to-myPurple text-white font-bold py-3 px-4 rounded-lg transition-all shadow-lg hover:shadow-myPurple/30"
-            disabled={isSubmitting}
+            disabled={isCreating}
           >
-            {isSubmitting ? "Publishing..." : "Publish Artwork"}
+            {isCreating ? "Publishing..." : "Publish Artwork"}
           </Button>
         </div>
       </form>

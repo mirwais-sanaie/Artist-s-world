@@ -1,12 +1,12 @@
-import { createEditPost } from "@/services/apiPosts";
+import { createNewPost } from "@/services/apiPosts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 export function useCreatePost() {
   const queryClient = useQueryClient();
 
-  const { mutate: createPost, isLoading: isCreating } = useMutation({
-    mutationFn: createEditPost,
+  const { mutate: createPost, isPending: isCreating } = useMutation({
+    mutationFn: createNewPost,
     onSuccess: () => {
       toast.success("New post successfully created");
       queryClient.invalidateQueries({ queryKey: ["posts"] });

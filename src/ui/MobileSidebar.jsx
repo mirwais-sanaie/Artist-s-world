@@ -17,10 +17,8 @@ import { Link, NavLink } from "react-router-dom";
 import { signOut } from "@/services/apiAuth";
 
 export default function MobileSidebar({ navLinks, setIsMenuOpen }) {
-  const { setOpenModal, user } = useAuthContext();
+  const { setOpenModal, user, setUser, savedPosts } = useAuthContext();
   const [openJobsDropdown, setOpenJobsDropdown] = useState(false);
-
-  const { setUser } = useAuthContext();
 
   function handleLogOut() {
     signOut();
@@ -70,7 +68,7 @@ export default function MobileSidebar({ navLinks, setIsMenuOpen }) {
                     className="absolute -top-3 -right-3 bg-myPurple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
                     aria-label="Cart items count"
                   >
-                    3
+                    {savedPosts?.length || 0}
                   </span>
                 </div>
               </Link>
@@ -118,14 +116,14 @@ export default function MobileSidebar({ navLinks, setIsMenuOpen }) {
                   {openJobsDropdown && (
                     <div className="ml-4 mt-2 flex flex-col gap-4">
                       <NavLink
-                        to="/Jobs/post"
+                        to="/jobs/postJobs"
                         className="flex items-center gap-2 text-sm text-white hover:text-myPurple"
                       >
                         <FileText className="w-4 h-4" />
                         Post Job
                       </NavLink>
                       <NavLink
-                        to="/Jobs/find"
+                        to="/jobs/findJobs"
                         className="flex items-center gap-2 text-sm text-white hover:text-myPurple"
                       >
                         <BriefcaseBusiness className="w-4 h-4" />

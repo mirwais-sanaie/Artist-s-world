@@ -45,31 +45,11 @@ export default function SignIn({ open, onOpenChange, onSwitchToSignUp }) {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">Welcome Back</DialogTitle>
           <DialogDescription className="text-gray-400">
-            Sign in to access your creative dashboard
+            Sign in to access your creative website
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          {/* <Button
-            onClick={handleGoogleLogin}
-            variant="outline"
-            className="w-full gap-2 hover:bg-myGray-dark"
-          >
-            <GoogleIcon className="h-4 w-4" />
-            Continue with Google
-          </Button> */}
-
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-700" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-gray-400">
-                Or continue with email
-              </span>
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4">
               <div className="grid gap-2">

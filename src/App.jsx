@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense } from "react";
 import Spinner from "./ui/Spinner";
 import FirstLoader from "./ui/FirstLoader";
+import { ToastContainer } from "react-toastify";
 
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -19,7 +20,7 @@ const ConceptIdea = lazy(() => import("./ui/ConceptIdea"));
 const DigitalPictures = lazy(() => import("./ui/DigitalPictures"));
 const PostJobs = lazy(() => import("./features/jobs/PostJobs"));
 const FindJobs = lazy(() => import("./features/jobs/FindJobs"));
-const Companies = lazy(() => import("./pages/Companies"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
 const Jobs = lazy(() => import("./pages/Jobs"));
 const Cart = lazy(() => import("./pages/Cart"));
 const User = lazy(() => import("./pages/User"));
@@ -107,7 +108,7 @@ function App() {
                 />
               </Route>
 
-              <Route path="companies" element={<Companies />} />
+              <Route path="about" element={<AboutUs />} />
               <Route path="jobs" element={<Jobs />}>
                 <Route path="postJobs" element={<PostJobs />} />
                 <Route path="findJobs" element={<FindJobs />} />
@@ -120,6 +121,19 @@ function App() {
           </Routes>
         </AuthContextProv>
       </QueryClientProvider>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Suspense>
   );
 }

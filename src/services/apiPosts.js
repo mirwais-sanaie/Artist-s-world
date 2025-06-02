@@ -14,7 +14,7 @@ export async function getPosts() {
   return data;
 }
 
-export async function createEditPost(newPost, id) {
+export async function createNewPost(newPost, id) {
   const hasImagePath = newPost.image?.startsWith?.(supabaseUrl);
 
   const imageName = `${Math.random()}-${newPost.image.name}`.replaceAll(

@@ -33,7 +33,6 @@ const PostJob = () => {
     );
     reset();
   }
-  console.log(isCreating);
   function onError(error) {
     toast.error("Error posting job: " + error.message);
   }
