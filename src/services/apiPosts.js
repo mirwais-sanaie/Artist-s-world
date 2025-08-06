@@ -2,8 +2,15 @@
 import { toast } from "react-toastify";
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getPosts() {
-  const { data, error } = await supabase.from("posts").select("*");
+// services/apiPosts.js
+export async function getPosts(search = "") {
+  let query = supabase.from("posts").select("*");
+
+  if (search) {
+    query = query.ilike("title", `%${search}%`); // Case-insensitive search
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     toast.error("Error fetching posts: " + error.message, {
@@ -11,8 +18,21 @@ export async function getPosts() {
     });
     throw error;
   }
+
   return data;
 }
+
+// export async function getPosts() {
+//   const { data, error } = await supabase.from("posts").select("*");
+
+//   if (error) {
+//     toast.error("Error fetching posts: " + error.message, {
+//       position: "top-center",
+//     });
+//     throw error;
+//   }
+//   return data;
+// }
 
 export async function createNewPost(newPost, id) {
   const hasImagePath = newPost.image?.startsWith?.(supabaseUrl);

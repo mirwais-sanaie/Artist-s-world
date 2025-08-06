@@ -1,14 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { usePosts } from "@/features/posts/usePosts";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Spinner from "./Spinner";
 
 function Storyboard() {
-  const { posts, isLoading, isError } = usePosts();
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
+
+  const { posts, isLoading, error } = usePosts(search);
 
   if (isLoading) return <Spinner />;
-  if (isError || !posts) return <div>Something went wrong loading posts.</div>;
+  if (error || !posts) return <div>Something went wrong loading posts.</div>;
 
   const storyboard = posts.filter((post) => post.category === "Story board");
   return (

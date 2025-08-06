@@ -10,6 +10,8 @@ import { useCreatePost } from "./useCreatePost";
 import { useAuthContext } from "@/contexts/AuthContextProv";
 import { useNavigate } from "react-router-dom";
 
+const MAX_DESCRIPTION_LENGTH = 300;
+
 const categories = [
   "Character Design",
   "Environment Art",
@@ -122,6 +124,10 @@ export default function CreatePost() {
           <Textarea
             {...register("description", {
               required: "Description is required",
+              maxLength: {
+                value: MAX_DESCRIPTION_LENGTH,
+                message: `Description cannot exceed ${MAX_DESCRIPTION_LENGTH} characters`,
+              },
             })}
             id="description"
             placeholder="Tell us about your artwork..."

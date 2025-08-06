@@ -1,21 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { usePosts } from "@/features/posts/usePosts";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Spinner from "./Spinner";
 
 function DigitalPictures() {
-  const { posts, isLoading, isError } = usePosts();
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
+
+  const { posts, isLoading, error } = usePosts(search);
 
   if (isLoading) return <Spinner />;
-  if (isError || !posts) return <div>Something went wrong loading posts.</div>;
+  if (error || !posts) return <div>Something went wrong loading posts.</div>;
 
   const digitalPictures = posts.filter(
     (post) => post.category === "Digital pictures"
   );
   return (
     <div className="py-8">
-      <h1 className="font-bold text-3xl md:text-4xl mb-6">Substance 3d</h1>
+      <h1 className="font-bold text-3xl md:text-4xl mb-6">Digital Pictures</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-1">
         {digitalPictures.map((post) => (
           <Link

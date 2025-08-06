@@ -8,6 +8,7 @@ import {
   BriefcaseBusiness,
   ArrowUpFromLine,
   LogOut,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { signOut } from "@/services/apiAuth";
+import SearchInput from "./SearchInput";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,14 +84,7 @@ export default function Header() {
           <DesktopNav navLinks={navLinks} />
 
           {/* Larger Desktop Search Input */}
-          <div className="hidden md:flex relative w-full max-w-lg mx-2">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#A0A0A0]" />
-            <Input
-              type="search"
-              placeholder="Search artwork, artists..."
-              className="pl-10 pr-4 py-3 rounded-full bg-[#1E1E24] border-myPurple text-white placeholder-[#A0A0A0] focus-visible:ring-myPurple focus-visible:border-myPurple text-sm h-11"
-            />
-          </div>
+          <SearchInput />
 
           <div className="hidden md:flex items-center gap-4">
             <Link
