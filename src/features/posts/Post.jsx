@@ -50,6 +50,10 @@ export default function Post() {
     });
   };
 
+  const handleBackTo = () => {
+    navigate(-2);
+  };
+
   const handleSaveToLocalStorage = () => {
     if (isSaved) {
       removeFromSavedPosts(post.id);
@@ -63,7 +67,13 @@ export default function Post() {
     <div className=" mx-auto px-4 py-2">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-4/5">
-          <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl">
+          <div className="relative bg-gray-900 rounded-lg overflow-hidden shadow-xl">
+            <button
+              onClick={handleBackTo}
+              className="absolute cursor-pointer top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-myPurple/60 opacity-85 text-white text-sm rounded-full backdrop-blur hover:bg-black/80 transition"
+            >
+              ← Back
+            </button>
             <img
               src={post.image}
               alt={post.title}

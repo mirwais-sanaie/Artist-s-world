@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Card, CardContent } from "@/components/ui/card";
 import { usePosts } from "@/features/posts/usePosts";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
