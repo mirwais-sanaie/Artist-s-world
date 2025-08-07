@@ -137,3 +137,41 @@ export function useVerifyOTP() {
     mutationFn: verifyOTP,
   });
 }
+
+export async function requestOtpCode(email) {
+  try {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: false },
+    });
+    if (error) throw error;
+  } catch (error) {
+    throw new Error(
+      error.message.includes("rate limit")
+        ? "Too many requests. Try again later."
+        : "Failed to send verification code."
+    );
+  }
+}
+
+export async function verifyOtpCode(email, token) {
+  try {
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: "email",
+    });
+    if (error) throw error;
+  } catch (error) {
+    throw new Error("Invalid or expired code");
+  }
+}
+
+export async function updatePassword(newPassword) {
+  try {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+  } catch (error) {
+    throw new Error("Failed to update password. Try again.");
+  }
+}
