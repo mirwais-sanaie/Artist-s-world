@@ -1,4 +1,6 @@
-import { useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getPostById } from "@/services/apiPosts"; // You’ll write this function next
 import { Button } from "@/components/ui/button";
 import { Heart, Trash2 } from "lucide-react";
 import {
@@ -8,23 +10,29 @@ import {
   DialogTitle,
 } from "@radix-ui/react-dialog";
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
 import { useDeletePost } from "./useDeletePost";
 import { useAuthContext } from "@/contexts/AuthContextProv";
-import { useNavigate } from "react-router-dom";
+import Spinner from "@/ui/Spinner";
 
 export default function Post() {
-  const { state } = useLocation();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const post = state?.post;
 
+  const [post, setPost] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const { deletePost, isDeleting } = useDeletePost();
 
+  const { deletePost, isDeleting } = useDeletePost();
   const { user, savedPosts, addToSavedPosts, removeFromSavedPosts } =
     useAuthContext();
 
-  const [isSaved, setIsSaved] = useState(false);
+  useEffect(() => {
+    async function fetchPost() {
+      const data = await getPostById(id);
+      setPost(data);
+    }
+    fetchPost();
+  }, [id]);
 
   useEffect(() => {
     if (!post) return;
@@ -32,27 +40,22 @@ export default function Post() {
     setIsSaved(alreadySaved);
   }, [post, savedPosts]);
 
-  if (!post) {
-    return <div>Loading...</div>;
-  }
+  if (!post) return <Spinner />;
 
   const handleDelete = () => {
     deletePost(post.id, {
       onSuccess: () => {
-        navigate(`/category/characterDesign`);
+        navigate("/category/characterDesign");
       },
     });
   };
 
   const handleSaveToLocalStorage = () => {
-    if (!post) return;
-
     if (isSaved) {
       removeFromSavedPosts(post.id);
     } else {
       addToSavedPosts(post);
     }
-
     setIsSaved(!isSaved);
   };
 
